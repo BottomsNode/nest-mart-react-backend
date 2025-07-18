@@ -1,0 +1,13 @@
+export declare const PORT: string;
+export declare const DB_NAME: string;
+export declare const DB_TYPE: string;
+export declare const DB_HOST: string;
+export declare const DB_PORT: string;
+export declare const DB_USERNAME: string;
+export declare const DB_PASSWORD: string;
+export declare const SWAGGER_DOCS: string;
+export declare const jwtSecret: string;
+export declare const NODE_ENV: string;
+export declare const SESSION_SECRET: string;
+export declare const DB_SSL_MODE: string;
+export declare const PUBLIC_KEY = "isPublic";
