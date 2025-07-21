@@ -39,4 +39,9 @@ export class ProfileController {
     };
   }
 
+  @Post('cloudinary')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadToCloudinary(@UploadedFile() file: Express.Multer.File) {
+    return this.service.uploadToCloudinary(file);
+  }
 }
