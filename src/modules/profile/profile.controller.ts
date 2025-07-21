@@ -41,6 +41,6 @@ export class ProfileController {
 
   @Get('signature')
   getSignature(@Query('folder') folder?: string) {
-    return this.service.getUploadSignature(folder);
+    return this.service.getUploadSignature(folder ?? 'invoices');
   }
 }
