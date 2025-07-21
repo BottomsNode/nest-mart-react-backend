@@ -51,11 +51,9 @@ let ProductController = class ProductController {
         return this.productService.updateStock(params, stock);
     }
     activateProduct(params) {
-        console.log(params);
         return this.productService.setStatus(params, common_2.PRODUCT_STATUS.ACTIVE);
     }
     deactivateProduct(params) {
-        console.log(params);
         return this.productService.setStatus(params, common_2.PRODUCT_STATUS.INACTIVE);
     }
     delete(params) {

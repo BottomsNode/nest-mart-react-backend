@@ -144,8 +144,8 @@ export class ProductService {
     if (!product) throw new CustomNotFoundException('Product not found');
 
     product.status = status;
-    console.log("-------------------------------",status)
-    console.log(product.status)
+    // console.log("-------------------------------",status)
+    // console.log(product.status)
 
     const saved = await this.productRepo.update(params.Id,product);
 

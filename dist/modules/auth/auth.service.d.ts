@@ -8,6 +8,7 @@ export declare class AuthService {
     validateUser(email: string, password: string): Promise<{
         id: number;
         email: string;
+        name: string;
         role: {
             name: string;
             permissions: string[];

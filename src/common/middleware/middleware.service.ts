@@ -22,8 +22,6 @@ export class AuthMiddleware implements NestMiddleware {
     try {
       const decoded = jwt.verify(token, jwtSecret) as AuthenticatedUser;
       req['user'] = decoded;
-
-      console.log('Incomming Token Decoded >>>>>>>>>>>>>>>>>>> ', decoded);
       next();
     } catch {
       throw new CustomBadGatewayException('Invalid token');

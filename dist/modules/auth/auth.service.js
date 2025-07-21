@@ -30,6 +30,7 @@ let AuthService = class AuthService {
             return {
                 id: user.id,
                 email: user.email,
+                name: user.name,
                 role: {
                     name: user.role.name,
                     permissions: user.role.permissions.map((p) => p.name),
@@ -45,6 +46,7 @@ let AuthService = class AuthService {
         const payload = {
             id: user.id,
             email: user.email,
+            name: user.name,
             role: user.role.name,
             permissions: user.role.permissions,
         };

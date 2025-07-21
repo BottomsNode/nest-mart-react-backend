@@ -96,8 +96,6 @@ let ProductService = class ProductService {
         if (!product)
             throw new common_2.CustomNotFoundException('Product not found');
         product.status = status;
-        console.log("-------------------------------", status);
-        console.log(product.status);
         const saved = await this.productRepo.update(params.Id, product);
         const main = this.mapper.map(saved, product_entity_1.ProductEntity, main_product_dto_1.ProductMainDTO);
         return this.mapper.map(main, main_product_dto_1.ProductMainDTO, response_product_dto_1.ProductResponseDTO);

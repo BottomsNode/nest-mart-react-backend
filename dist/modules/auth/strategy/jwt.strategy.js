@@ -23,7 +23,6 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         });
     }
     validate(payload) {
-        console.log('User Incomming Payload : >>>>>>>>>>>>>>>>>>>>>>>>>> ', payload);
         return {
             userId: payload.id,
             email: payload.email,

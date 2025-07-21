@@ -14,10 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: JwtPayload) {
-    console.log(
-      'User Incomming Payload : >>>>>>>>>>>>>>>>>>>>>>>>>> ',
-      payload,
-    );
+    // console.log(
+    //   'User Incomming Payload : >>>>>>>>>>>>>>>>>>>>>>>>>> ',
+    //   payload,
+    // );
     return {
       userId: payload.id,
       email: payload.email,

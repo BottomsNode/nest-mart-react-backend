@@ -97,14 +97,14 @@ export class ProductController {
   @Put(':Id/activate/my/prod')
   @Permissions('MANAGE_PRODUCTS')
   activateProduct(@Param() params: IdParamDto): Promise<ProductResponseDTO> {
-    console.log(params)
+    // console.log(params)
     return this.productService.setStatus(params, PRODUCT_STATUS.ACTIVE);
   }
 
   @Put(':Id/deactivate/prod')
   @Permissions('MANAGE_PRODUCTS')
   deactivateProduct(@Param() params: IdParamDto): Promise<ProductResponseDTO> {
-    console.log(params)
+    // console.log(params)
     return this.productService.setStatus(params, PRODUCT_STATUS.INACTIVE);
   }
 

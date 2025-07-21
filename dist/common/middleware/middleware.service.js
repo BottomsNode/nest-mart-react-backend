@@ -22,7 +22,6 @@ let AuthMiddleware = class AuthMiddleware {
         try {
             const decoded = jwt.verify(token, common_2.jwtSecret);
             req['user'] = decoded;
-            console.log('Incomming Token Decoded >>>>>>>>>>>>>>>>>>> ', decoded);
             next();
         }
         catch {
