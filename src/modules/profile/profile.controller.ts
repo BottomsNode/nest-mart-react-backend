@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, ParseFilePipeBuilder, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, HttpStatus, ParseFilePipeBuilder, Post, Query, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { MAX_PROFILE_PICTURE_SIZE_IN_BYTES } from 'src/common';
@@ -39,9 +39,8 @@ export class ProfileController {
     };
   }
 
-  @Post('cloudinary')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadToCloudinary(@UploadedFile() file: Express.Multer.File) {
-    return this.service.uploadToCloudinary(file);
+  @Get('signature')
+  getSignature(@Query('folder') folder?: string) {
+    return this.service.getUploadSignature(folder);
   }
 }

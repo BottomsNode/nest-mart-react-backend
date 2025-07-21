@@ -15,4 +15,5 @@ export const SESSION_SECRET = process.env.SESSION_SECRET;
 export const DB_SSL_MODE = process.env.DB_SSL_MODE;
 export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 export const CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
+export const CLOUDINARY_SECRET_KEY = process.env.CLOUDINARY_SECRET_KEY;
 export const PUBLIC_KEY = 'isPublic';

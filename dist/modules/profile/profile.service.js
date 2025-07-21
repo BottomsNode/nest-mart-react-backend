@@ -13,6 +13,9 @@ exports.ProfileService = void 0;
 const common_1 = require("@nestjs/common");
 const fs = require("fs");
 const path = require("path");
+const node_fetch_1 = require("node-fetch");
+const FormData = require("form-data");
+const common_2 = require("../../common");
 let ProfileService = class ProfileService {
     uploadDir = './uploads';
     constructor() {
@@ -30,6 +33,23 @@ let ProfileService = class ProfileService {
             throw new Error('Failed to save file');
         }
         return fileName;
+    }
+    async uploadToCloudinary(file) {
+        const formData = new FormData();
+        formData.append('file', file.buffer, { filename: file.originalname });
+        formData.append('upload_preset', common_2.CLOUDINARY_UPLOAD_PRESET);
+        const response = await (0, node_fetch_1.default)(`https://api.cloudinary.com/v1_1/${common_2.CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+            method: 'POST',
+            body: formData,
+        });
+        if (!response.ok) {
+            throw new Error(`Cloudinary upload failed: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return {
+            url: data.secure_url,
+            publicId: data.public_id,
+        };
     }
 };
 exports.ProfileService = ProfileService;

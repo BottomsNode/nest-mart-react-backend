@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import fetch from 'node-fetch';
 import * as FormData from 'form-data';
+import { v2 as cloudinary } from 'cloudinary';
 import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from 'src/common';
 
 type CloudinaryUploadResponse = {
@@ -34,6 +35,12 @@ export class ProfileService {
         if (!fs.existsSync(this.uploadDir)) {
             fs.mkdirSync(this.uploadDir);
         }
+
+        cloudinary.config({
+            cloud_name: 'dmlai0dwy',
+            api_key: '889616663176843',
+            api_secret: '-abn8Y-dhbcbOfyVwRYW-sITbLM',
+        });
     }
 
     async saveFile(file): Promise<string> {
@@ -50,28 +57,23 @@ export class ProfileService {
         return fileName;
     }
 
-    async uploadToCloudinary(file: Express.Multer.File) {
-        const formData = new FormData();
-        formData.append('file', file.buffer, { filename: file.originalname });
-        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    async getUploadSignature(folder = 'invoices') {
+        const timestamp = Math.round(new Date().getTime() / 1000);
 
-        const response = await fetch(
-            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
+        const signature = cloudinary.utils.api_sign_request(
             {
-                method: 'POST',
-                body: formData as any,
+                timestamp,
+                folder,
             },
+            cloudinary.config().api_secret as string,
         );
 
-        if (!response.ok) {
-            throw new Error(`Cloudinary upload failed: ${response.statusText}`);
-        }
-
-        const data = await response.json() as CloudinaryUploadResponse;
-
         return {
-            url: data.secure_url,
-            publicId: data.public_id,
+            timestamp,
+            signature,
+            apiKey: cloudinary.config().api_key,
+            cloudName: cloudinary.config().cloud_name,
+            folder,
         };
     }
 }

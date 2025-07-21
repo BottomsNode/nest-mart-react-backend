@@ -40,6 +40,9 @@ let ProfileController = class ProfileController {
             count: files.length,
         };
     }
+    async uploadToCloudinary(file) {
+        return this.service.uploadToCloudinary(file);
+    }
 };
 exports.ProfileController = ProfileController;
 __decorate([
@@ -64,6 +67,14 @@ __decorate([
     __metadata("design:paramtypes", [Array]),
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "uploadMultipleFiles", null);
+__decorate([
+    (0, common_1.Post)('cloudinary'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    __param(0, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProfileController.prototype, "uploadToCloudinary", null);
 exports.ProfileController = ProfileController = __decorate([
     (0, common_1.Controller)('profile'),
     __metadata("design:paramtypes", [profile_service_1.ProfileService])

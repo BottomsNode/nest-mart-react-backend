@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PUBLIC_KEY = exports.DB_SSL_MODE = exports.SESSION_SECRET = exports.NODE_ENV = exports.jwtSecret = exports.SWAGGER_DOCS = exports.DB_PASSWORD = exports.DB_USERNAME = exports.DB_PORT = exports.DB_HOST = exports.DB_TYPE = exports.DB_NAME = exports.PORT = void 0;
+exports.PUBLIC_KEY = exports.CLOUDINARY_SECRET_KEY = exports.CLOUDINARY_UPLOAD_PRESET = exports.CLOUDINARY_CLOUD_NAME = exports.DB_SSL_MODE = exports.SESSION_SECRET = exports.NODE_ENV = exports.jwtSecret = exports.SWAGGER_DOCS = exports.DB_PASSWORD = exports.DB_USERNAME = exports.DB_PORT = exports.DB_HOST = exports.DB_TYPE = exports.DB_NAME = exports.PORT = void 0;
 const dotenv = require("dotenv");
 dotenv.config({ path: './.env' });
 exports.PORT = process.env.PORT;
@@ -15,5 +15,8 @@ exports.jwtSecret = process.env.JWT_SECRET;
 exports.NODE_ENV = process.env.NODE_ENV;
 exports.SESSION_SECRET = process.env.SESSION_SECRET;
 exports.DB_SSL_MODE = process.env.DB_SSL_MODE;
+exports.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
+exports.CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
+exports.CLOUDINARY_SECRET_KEY = process.env.CLOUDINARY_SECRET_KEY;
 exports.PUBLIC_KEY = 'isPublic';
 //# sourceMappingURL=secrets.keys.js.map

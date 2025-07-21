@@ -10,4 +10,7 @@ export declare const jwtSecret: string;
 export declare const NODE_ENV: string;
 export declare const SESSION_SECRET: string;
 export declare const DB_SSL_MODE: string;
+export declare const CLOUDINARY_CLOUD_NAME: string;
+export declare const CLOUDINARY_UPLOAD_PRESET: string;
+export declare const CLOUDINARY_SECRET_KEY: string;
 export declare const PUBLIC_KEY = "isPublic";
