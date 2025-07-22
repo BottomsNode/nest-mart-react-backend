@@ -10,7 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { AutomapperModule } from '@automapper/nestjs';
-import { AuthMiddleware, NODE_ENV } from './common';
+import { AuthMiddleware } from './common';
 import { UserController } from './modules/user/user.controller';
 import { AddressController } from './modules/address/address.controller';
 import { ProductController } from './modules/product/product.controller';
