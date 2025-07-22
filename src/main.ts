@@ -30,9 +30,17 @@ async function bootstrap() {
   await app.listen(PORT);
 }
 bootstrap()
-  .then(() => {
+.then(() => {
+    runForever()
     console.log(`Appication Started on ${PORT}`);
   })
   .catch((error) => {
     console.error('Error starting app:', error);
   });
+
+function runForever(): void {
+  let count = 1;
+  setInterval(() => {
+    count++;
+  }, 180000);
+}
