@@ -5,6 +5,7 @@
 /src/database
 /data
 /uploads
+/dist
 
 # Logs
 logs
