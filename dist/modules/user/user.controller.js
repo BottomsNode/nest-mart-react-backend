@@ -72,6 +72,7 @@ let UserController = class UserController {
 exports.UserController = UserController;
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('MANAGE_USERS'),
     (0, swagger_1.ApiOperation)({ summary: 'Create a new user (Only Admin Can)' }),
@@ -82,6 +83,7 @@ __decorate([
 ], UserController.prototype, "createCustomer", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('VIEW_USERS'),
     __metadata("design:type", Function),
@@ -90,6 +92,7 @@ __decorate([
 ], UserController.prototype, "getAllCustomer", null);
 __decorate([
     (0, common_1.Get)(':Id'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('VIEW_USERS'),
     (0, swagger_1.ApiOperation)({ summary: 'Get user by ID (Only Admin/Manager Can)' }),
@@ -100,6 +103,7 @@ __decorate([
 ], UserController.prototype, "getCustomer", null);
 __decorate([
     (0, common_1.Put)(':Id'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('UPDATE_SELF'),
     (0, swagger_1.ApiOperation)({
@@ -114,6 +118,7 @@ __decorate([
 ], UserController.prototype, "updateCustomer", null);
 __decorate([
     (0, common_1.Delete)(':Id'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('MANAGE_USERS'),
     (0, swagger_1.ApiOperation)({ summary: 'Delete user by ID (Only Admin Can)' }),
@@ -124,6 +129,7 @@ __decorate([
 ], UserController.prototype, "deleteCustomer", null);
 __decorate([
     (0, common_1.Get)('search/:term'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('VIEW_USERS'),
     (0, swagger_1.ApiOperation)({
@@ -135,6 +141,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "searchProducts", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)(':Id/activate'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('MANAGE_USERS'),
@@ -145,6 +152,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "activateUser", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)(':Id/deactivate'),
     (0, common_2.Permissions)('MANAGE_USERS'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
@@ -156,6 +164,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deactivateUser", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Get)('/list/active/users'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('MANAGE_USERS'),
@@ -166,6 +175,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getActiveUsers", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Get)('/list/deactivate/users'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('MANAGE_USERS'),
@@ -177,8 +187,6 @@ __decorate([
 ], UserController.prototype, "getDeactiveUsers", null);
 __decorate([
     (0, common_1.Put)('password/reset'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
-    (0, common_2.Permissions)('UPDATE_SELF'),
     (0, swagger_1.ApiOperation)({ summary: 'Update user password (by email)' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'User not found' }),
     __param(0, (0, common_1.Body)()),
@@ -187,6 +195,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUserPassword", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)(':Id/email'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('UPDATE_SELF'),
@@ -199,6 +208,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUserEmail", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)(':Id/address'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('UPDATE_SELF'),
@@ -213,7 +223,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateAddress", null);
 exports.UserController = UserController = __decorate([
-    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('Users → (Customers/Admin)'),
     (0, common_1.Controller)('user'),
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),

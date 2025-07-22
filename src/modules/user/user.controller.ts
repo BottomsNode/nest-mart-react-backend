@@ -30,7 +30,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PatchAddressDTO } from '../address/dto/patch/patch-address.dto';
 import { PermissionGuard } from '../auth/guards/permissions.guard';
 
-@ApiBearerAuth()
 @ApiTags('Users → (Customers/Admin)')
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -38,6 +37,7 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post()
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('MANAGE_USERS')
   @ApiOperation({ summary: 'Create a new user (Only Admin Can)' })
@@ -48,6 +48,7 @@ export class UserController {
   }
 
   @Get()
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('VIEW_USERS')
   async getAllCustomer(): Promise<CustomerResponseDTO[]> {
@@ -55,6 +56,7 @@ export class UserController {
   }
 
   @Get(':Id')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('VIEW_USERS')
   @ApiOperation({ summary: 'Get user by ID (Only Admin/Manager Can)' })
@@ -63,6 +65,7 @@ export class UserController {
   }
 
   @Put(':Id')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('UPDATE_SELF')
   @ApiOperation({
@@ -76,6 +79,7 @@ export class UserController {
   }
 
   @Delete(':Id')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('MANAGE_USERS')
   @ApiOperation({ summary: 'Delete user by ID (Only Admin Can)' })
@@ -84,6 +88,7 @@ export class UserController {
   }
 
   @Get('search/:term')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('VIEW_USERS')
   @ApiOperation({
@@ -93,6 +98,7 @@ export class UserController {
     return this.userService.searchByName(term);
   }
 
+  @ApiBearerAuth()
   @Put(':Id/activate')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('MANAGE_USERS')
@@ -101,6 +107,8 @@ export class UserController {
     return this.userService.setActiveStatus(params, true);
   }
 
+  
+  @ApiBearerAuth()
   @Put(':Id/deactivate')
   @Permissions('MANAGE_USERS')
   @UseGuards(JwtAuthGuard, PermissionGuard)
@@ -110,6 +118,8 @@ export class UserController {
     return this.userService.setActiveStatus(params, false);
   }
 
+  
+  @ApiBearerAuth()
   @Get('/list/active/users')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('MANAGE_USERS')
@@ -122,6 +132,7 @@ export class UserController {
     return this.userService.getActiveCustomers(pagination);
   }
 
+  @ApiBearerAuth()
   @Get('/list/deactivate/users')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('MANAGE_USERS')
@@ -148,8 +159,6 @@ export class UserController {
   //   return this.userService.updatePassword(params, body.password);
   // }
   @Put('password/reset')
-  @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions('UPDATE_SELF')
   @ApiOperation({ summary: 'Update user password (by email)' })
   @ApiResponse({ status: 404, description: 'User not found' })
   async updateUserPassword(@Body() body: PatchPasswordDTO) {
@@ -157,6 +166,7 @@ export class UserController {
   }
 
 
+  @ApiBearerAuth()
   @Put(':Id/email')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('UPDATE_SELF')
@@ -168,6 +178,7 @@ export class UserController {
     return this.userService.updateEmail(params, body.email);
   }
 
+  @ApiBearerAuth()
   @Put(':Id/address')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('UPDATE_SELF')

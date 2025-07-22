@@ -33,6 +33,10 @@ let AppModule = class AppModule {
     configure(consumer) {
         consumer
             .apply(common_2.AuthMiddleware)
+            .exclude({
+            path: '/user/password/reset',
+            method: common_1.RequestMethod.PUT,
+        })
             .forRoutes(user_controller_1.UserController, address_controller_1.AddressController, product_controller_1.ProductController, sale_controller_1.SaleController, saleItem_controller_1.SaleItemController);
     }
 };
