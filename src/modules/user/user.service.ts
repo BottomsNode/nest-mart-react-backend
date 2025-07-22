@@ -135,16 +135,6 @@ export class UserService {
     return this.mapper.mapArray(mainList, CustomerMainDTO, CustomerResponseDTO);
   }
 
-  // async updatePassword(
-  //   params: IdParamDto,
-  //   password: string,
-  // ): Promise<CustomerResponseDTO> {
-  //   const user = await this.customerRepo.findOne({ where: { id: params.Id } });
-  //   if (!user) throw new CustomNotFoundException('User  not found');
-  //   user.password = await bcrypt.hash(password, 10);
-  //   const saved = await this.customerRepo.update(params.Id, user);
-  //   return this.mapper.map(saved, CustomerEntity, CustomerResponseDTO);
-  // }
   async updatePassword(email: string, password: string): Promise<CustomerResponseDTO> {
     const user = await this.customerRepo.findOne({ where: { email } });
     if (!user) throw new CustomNotFoundException('User not found');

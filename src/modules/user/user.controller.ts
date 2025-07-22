@@ -145,19 +145,6 @@ export class UserController {
     return this.userService.getDeactiveCustomers(pagination);
   }
 
-  // @Put(':Id/password')
-  // @UseGuards(JwtAuthGuard, PermissionGuard)
-  // @Permissions('UPDATE_SELF')
-  // @ApiOperation({
-  //   summary: 'Update user password (Only Admin/Manager/User Can)',
-  // })
-  // @ApiResponse({ status: 404, description: 'User  not found' })
-  // async updateUserPassword(
-  //   @Param() params: IdParamDto,
-  //   @Body() body: PatchPasswordDTO,
-  // ) {
-  //   return this.userService.updatePassword(params, body.password);
-  // }
   @Put('password/reset')
   @ApiOperation({ summary: 'Update user password (by email)' })
   @ApiResponse({ status: 404, description: 'User not found' })
