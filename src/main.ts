@@ -41,6 +41,7 @@ bootstrap()
 function runForever(): void {
   let count = 1;
   setInterval(() => {
+    console.log(`Application is running...`);
     count++;
-  }, 180000);
+  }, 10000);
 }
