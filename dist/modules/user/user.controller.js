@@ -59,8 +59,8 @@ let UserController = class UserController {
     getDeactiveUsers(pagination) {
         return this.userService.getDeactiveCustomers(pagination);
     }
-    async updateUserPassword(params, body) {
-        return this.userService.updatePassword(params, body.password);
+    async updateUserPassword(body) {
+        return this.userService.updatePassword(body.email, body.password);
     }
     async updateUserEmail(params, body) {
         return this.userService.updateEmail(params, body.email);
@@ -176,18 +176,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getDeactiveUsers", null);
 __decorate([
-    (0, common_1.Put)(':Id/password'),
+    (0, common_1.Put)('password/reset'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionGuard),
     (0, common_2.Permissions)('UPDATE_SELF'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Update user password (Only Admin/Manager/User Can)',
-    }),
-    (0, swagger_1.ApiResponse)({ status: 404, description: 'User  not found' }),
-    __param(0, (0, common_1.Param)()),
-    __param(1, (0, common_1.Body)()),
+    (0, swagger_1.ApiOperation)({ summary: 'Update user password (by email)' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'User not found' }),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [common_2.IdParamDto,
-        patch_password_dto_1.PatchPasswordDTO]),
+    __metadata("design:paramtypes", [patch_password_dto_1.PatchPasswordDTO]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUserPassword", null);
 __decorate([

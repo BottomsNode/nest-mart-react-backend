@@ -27,7 +27,7 @@ export declare class UserController {
         totalRecords: number;
         totalPages: number;
     }>;
-    updateUserPassword(params: IdParamDto, body: PatchPasswordDTO): Promise<CustomerResponseDTO>;
+    updateUserPassword(body: PatchPasswordDTO): Promise<CustomerResponseDTO>;
     updateUserEmail(params: IdParamDto, body: PatchEmailDTO): Promise<CustomerResponseDTO>;
     updateAddress(params: IdParamDto, dto: PatchAddressDTO): Promise<CustomerResponseDTO>;
 }

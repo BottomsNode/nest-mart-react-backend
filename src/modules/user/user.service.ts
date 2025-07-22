@@ -26,7 +26,7 @@ export class UserService {
     @Inject('RolesRepository') private readonly roleRepo: RolesRepository,
     private readonly addressService: AddressService,
     @InjectMapper() private readonly mapper: Mapper,
-  ) {}
+  ) { }
 
   async create(dto: CreateCustomerDTO): Promise<CustomerResponseDTO> {
     const existingCustomer = await this.customerRepo.findOne({
@@ -135,16 +135,26 @@ export class UserService {
     return this.mapper.mapArray(mainList, CustomerMainDTO, CustomerResponseDTO);
   }
 
-  async updatePassword(
-    params: IdParamDto,
-    password: string,
-  ): Promise<CustomerResponseDTO> {
-    const user = await this.customerRepo.findOne({ where: { id: params.Id } });
-    if (!user) throw new CustomNotFoundException('User  not found');
+  // async updatePassword(
+  //   params: IdParamDto,
+  //   password: string,
+  // ): Promise<CustomerResponseDTO> {
+  //   const user = await this.customerRepo.findOne({ where: { id: params.Id } });
+  //   if (!user) throw new CustomNotFoundException('User  not found');
+  //   user.password = await bcrypt.hash(password, 10);
+  //   const saved = await this.customerRepo.update(params.Id, user);
+  //   return this.mapper.map(saved, CustomerEntity, CustomerResponseDTO);
+  // }
+  async updatePassword(email: string, password: string): Promise<CustomerResponseDTO> {
+    const user = await this.customerRepo.findOne({ where: { email } });
+    if (!user) throw new CustomNotFoundException('User not found');
+
     user.password = await bcrypt.hash(password, 10);
-    const saved = await this.customerRepo.update(params.Id, user);
-    return this.mapper.map(saved, CustomerEntity, CustomerResponseDTO);
+    await this.customerRepo.update(user.id, { password: user.password });
+
+    return this.mapper.map(user, CustomerEntity, CustomerResponseDTO);
   }
+
 
   async updateEmail(
     params: IdParamDto,

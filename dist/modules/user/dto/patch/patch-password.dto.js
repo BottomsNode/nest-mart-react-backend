@@ -15,6 +15,7 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class PatchPasswordDTO {
     password;
+    email;
 }
 exports.PatchPasswordDTO = PatchPasswordDTO;
 __decorate([
@@ -24,4 +25,10 @@ __decorate([
     (0, classes_1.AutoMap)(),
     __metadata("design:type", String)
 ], PatchPasswordDTO.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    (0, classes_1.AutoMap)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], PatchPasswordDTO.prototype, "email", void 0);
 //# sourceMappingURL=patch-password.dto.js.map

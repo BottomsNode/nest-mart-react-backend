@@ -99,13 +99,13 @@ let UserService = class UserService {
         const mainList = this.mapper.mapArray(found, user_entity_1.CustomerEntity, main_customer__dto_1.CustomerMainDTO);
         return this.mapper.mapArray(mainList, main_customer__dto_1.CustomerMainDTO, response_customer_dto_1.CustomerResponseDTO);
     }
-    async updatePassword(params, password) {
-        const user = await this.customerRepo.findOne({ where: { id: params.Id } });
+    async updatePassword(email, password) {
+        const user = await this.customerRepo.findOne({ where: { email } });
         if (!user)
-            throw new common_2.CustomNotFoundException('User  not found');
+            throw new common_2.CustomNotFoundException('User not found');
         user.password = await bcrypt.hash(password, 10);
-        const saved = await this.customerRepo.update(params.Id, user);
-        return this.mapper.map(saved, user_entity_1.CustomerEntity, response_customer_dto_1.CustomerResponseDTO);
+        await this.customerRepo.update(user.id, { password: user.password });
+        return this.mapper.map(user, user_entity_1.CustomerEntity, response_customer_dto_1.CustomerResponseDTO);
     }
     async updateEmail(params, email) {
         const user = await this.customerRepo.findOne({ where: { id: params.Id } });

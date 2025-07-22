@@ -40,8 +40,8 @@ let ProfileController = class ProfileController {
             count: files.length,
         };
     }
-    async uploadToCloudinary(file) {
-        return this.service.uploadToCloudinary(file);
+    getSignature(folder) {
+        return this.service.getUploadSignature(folder ?? 'invoices');
     }
 };
 exports.ProfileController = ProfileController;
@@ -68,13 +68,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "uploadMultipleFiles", null);
 __decorate([
-    (0, common_1.Post)('cloudinary'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    __param(0, (0, common_1.UploadedFile)()),
+    (0, common_1.Get)('signature'),
+    __param(0, (0, common_1.Query)('folder')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], ProfileController.prototype, "uploadToCloudinary", null);
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ProfileController.prototype, "getSignature", null);
 exports.ProfileController = ProfileController = __decorate([
     (0, common_1.Controller)('profile'),
     __metadata("design:paramtypes", [profile_service_1.ProfileService])

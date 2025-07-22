@@ -12,8 +12,11 @@ export declare class ProfileController {
         fileNames: string[];
         count: number;
     }>;
-    uploadToCloudinary(file: Express.Multer.File): Promise<{
-        url: string;
-        publicId: string;
+    getSignature(folder?: string): Promise<{
+        timestamp: number;
+        signature: string;
+        apiKey: string;
+        cloudName: string;
+        folder: string;
     }>;
 }

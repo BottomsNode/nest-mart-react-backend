@@ -31,7 +31,7 @@ export declare class UserService {
         totalPages: number;
     }>;
     searchByName(term: string): Promise<CustomerResponseDTO[]>;
-    updatePassword(params: IdParamDto, password: string): Promise<CustomerResponseDTO>;
+    updatePassword(email: string, password: string): Promise<CustomerResponseDTO>;
     updateEmail(params: IdParamDto, email: string): Promise<CustomerResponseDTO>;
     private getUsersByStatusAndRole;
     findByEmail(email: string): Promise<CustomerEntity | null>;

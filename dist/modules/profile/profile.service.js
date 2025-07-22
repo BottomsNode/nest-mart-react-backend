@@ -13,15 +13,18 @@ exports.ProfileService = void 0;
 const common_1 = require("@nestjs/common");
 const fs = require("fs");
 const path = require("path");
-const node_fetch_1 = require("node-fetch");
-const FormData = require("form-data");
-const common_2 = require("../../common");
+const cloudinary_1 = require("cloudinary");
 let ProfileService = class ProfileService {
     uploadDir = './uploads';
     constructor() {
         if (!fs.existsSync(this.uploadDir)) {
             fs.mkdirSync(this.uploadDir);
         }
+        cloudinary_1.v2.config({
+            cloud_name: 'dmlai0dwy',
+            api_key: '889616663176843',
+            api_secret: '-abn8Y-dhbcbOfyVwRYW-sITbLM',
+        });
     }
     async saveFile(file) {
         const fileName = `${Date.now()}_${file.originalname}`;
@@ -34,21 +37,18 @@ let ProfileService = class ProfileService {
         }
         return fileName;
     }
-    async uploadToCloudinary(file) {
-        const formData = new FormData();
-        formData.append('file', file.buffer, { filename: file.originalname });
-        formData.append('upload_preset', common_2.CLOUDINARY_UPLOAD_PRESET);
-        const response = await (0, node_fetch_1.default)(`https://api.cloudinary.com/v1_1/${common_2.CLOUDINARY_CLOUD_NAME}/auto/upload`, {
-            method: 'POST',
-            body: formData,
-        });
-        if (!response.ok) {
-            throw new Error(`Cloudinary upload failed: ${response.statusText}`);
-        }
-        const data = await response.json();
+    async getUploadSignature(folder = 'invoices') {
+        const timestamp = Math.round(new Date().getTime() / 1000);
+        const signature = cloudinary_1.v2.utils.api_sign_request({
+            timestamp,
+            folder,
+        }, cloudinary_1.v2.config().api_secret);
         return {
-            url: data.secure_url,
-            publicId: data.public_id,
+            timestamp,
+            signature,
+            apiKey: cloudinary_1.v2.config().api_key,
+            cloudName: cloudinary_1.v2.config().cloud_name,
+            folder,
         };
     }
 };

@@ -16,6 +16,7 @@ import {
   ApiTags,
   ApiOperation,
   ApiResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
@@ -34,7 +35,7 @@ import { PermissionGuard } from '../auth/guards/permissions.guard';
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   @UseGuards(JwtAuthGuard, PermissionGuard)
@@ -133,19 +134,28 @@ export class UserController {
     return this.userService.getDeactiveCustomers(pagination);
   }
 
-  @Put(':Id/password')
+  // @Put(':Id/password')
+  // @UseGuards(JwtAuthGuard, PermissionGuard)
+  // @Permissions('UPDATE_SELF')
+  // @ApiOperation({
+  //   summary: 'Update user password (Only Admin/Manager/User Can)',
+  // })
+  // @ApiResponse({ status: 404, description: 'User  not found' })
+  // async updateUserPassword(
+  //   @Param() params: IdParamDto,
+  //   @Body() body: PatchPasswordDTO,
+  // ) {
+  //   return this.userService.updatePassword(params, body.password);
+  // }
+  @Put('password/reset')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions('UPDATE_SELF')
-  @ApiOperation({
-    summary: 'Update user password (Only Admin/Manager/User Can)',
-  })
-  @ApiResponse({ status: 404, description: 'User  not found' })
-  async updateUserPassword(
-    @Param() params: IdParamDto,
-    @Body() body: PatchPasswordDTO,
-  ) {
-    return this.userService.updatePassword(params, body.password);
+  @ApiOperation({ summary: 'Update user password (by email)' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async updateUserPassword(@Body() body: PatchPasswordDTO) {
+    return this.userService.updatePassword(body.email, body.password);
   }
+
 
   @Put(':Id/email')
   @UseGuards(JwtAuthGuard, PermissionGuard)

@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength } from 'class-validator';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class PatchPasswordDTO {
   @IsString()
@@ -8,4 +8,9 @@ export class PatchPasswordDTO {
   @MinLength(6)
   @AutoMap()
   password: string;
+
+  @IsEmail()
+  @AutoMap()
+  @ApiProperty()
+  email: string;
 }
