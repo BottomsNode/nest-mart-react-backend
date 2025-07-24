@@ -12,10 +12,6 @@ import {
   REDIS_PORT,
 } from 'src/common';
 
-console.log(REDIS_HOST)
-console.log(REDIS_PASSWORD)
-console.log(REDIS_PORT)
-
 let redisClient: Redis | null = null;
 
 @Injectable()

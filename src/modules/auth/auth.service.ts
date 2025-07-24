@@ -62,7 +62,6 @@ export class AuthService {
     const ttl = decoded.exp - now;
 
     await this.redisClient.set(`user_token:${user.id}`, token, 'EX', ttl);
-    console.log("user logged in")
     return token;
   }
 
