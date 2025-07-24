@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PermissionsEntity } from './entities/permission.entity';
 import { RolesEntity } from './entities/role.entity';
 import { RolesRepository } from './repository/roles.repository';
+import { redisProvider } from './redis.provider';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RolesRepository } from './repository/roles.repository';
   ],
   controllers: [AuthController],
   providers: [
+    redisProvider,
     AuthService,
     JwtStrategy,
     {

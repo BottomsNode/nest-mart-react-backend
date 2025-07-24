@@ -16,4 +16,7 @@ export const DB_SSL_MODE = process.env.DB_SSL_MODE;
 export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 export const CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
 export const CLOUDINARY_SECRET_KEY = process.env.CLOUDINARY_SECRET_KEY;
+export const REDIS_HOST = process.env.REDIS_HOST;
+export const REDIS_PORT = process.env.REDIS_PORT;
+export const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
 export const PUBLIC_KEY = 'isPublic';
