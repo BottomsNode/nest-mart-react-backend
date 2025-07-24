@@ -45,6 +45,7 @@ export class AuthService {
     const user = await this.validateUser(body.email, body.password);
     const existingToken = await this.redisClient.get(`user_token:${user.id}`);
     if (existingToken) {
+      await this.redisClient.del(`user_token:${user.id}`);
       throw new CustomUnauthorizedException('User already logged in with an active token');
     }
 
