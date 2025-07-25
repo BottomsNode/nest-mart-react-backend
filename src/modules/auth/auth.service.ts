@@ -6,6 +6,8 @@ import * as jwt from 'jsonwebtoken';
 import Redis from 'ioredis';
 import { LoginDTO } from './dto/login.dto';
 import { CustomUnauthorizedException } from 'src/common/exception/unauthorized.exception';
+import { error } from 'console';
+import { CustomNotFoundException } from 'src/common';
 
 @Injectable()
 export class AuthService {
@@ -17,28 +19,27 @@ export class AuthService {
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
-
-    if (
-      user &&
-      user.isActive &&
-      (await bcrypt.compare(password, user.password))
-    ) {
-      return {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: {
-          name: user.role.name,
-          permissions: user.role.permissions.map((p) => p.name),
-        },
-      };
+    if (!user) {
+      throw new CustomNotFoundException('User Not Found');
     }
 
-    throw new CustomUnauthorizedException(
-      user && !user.isActive
-        ? 'Account is deactivated. Please contact support.'
-        : 'Invalid credentials Or User Not Found'
-    );
+    if (!user.isActive) {
+      throw new CustomUnauthorizedException('Account is deactivated. Please contact support.');
+    }
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new CustomUnauthorizedException('Invalid Credentials');
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: {
+        name: user.role.name,
+        permissions: user.role.permissions.map((p) => p.name),
+      },
+    }
   }
 
   async login(body: LoginDTO) {
