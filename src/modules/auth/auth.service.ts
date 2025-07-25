@@ -37,7 +37,7 @@ export class AuthService {
     throw new CustomUnauthorizedException(
       user && !user.isActive
         ? 'Account is deactivated. Please contact support.'
-        : 'Invalid credentials'
+        : 'Invalid credentials Or User Not Found'
     );
   }
 
@@ -48,7 +48,6 @@ export class AuthService {
       await this.redisClient.del(`user_token:${user.id}`);
       throw new CustomUnauthorizedException('User already logged in with an active token');
     }
-
     const payload = {
       id: user.id,
       email: user.email,
