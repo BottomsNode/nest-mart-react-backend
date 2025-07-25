@@ -6,7 +6,6 @@ import * as jwt from 'jsonwebtoken';
 import Redis from 'ioredis';
 import { LoginDTO } from './dto/login.dto';
 import { CustomUnauthorizedException } from 'src/common/exception/unauthorized.exception';
-import { error } from 'console';
 import { CustomNotFoundException } from 'src/common';
 
 @Injectable()
@@ -20,7 +19,7 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new CustomNotFoundException('User Not Found');
+      throw new CustomNotFoundException('User');
     }
 
     if (!user.isActive) {

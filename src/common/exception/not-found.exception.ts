@@ -3,6 +3,6 @@ import { BaseException } from './base/base.exception';
 
 export class CustomNotFoundException extends BaseException {
   constructor(resource: string) {
-    super(`${resource} not found`, HttpStatus.NOT_FOUND);
+    super(`${resource} Not Found`, HttpStatus.NOT_FOUND);
   }
 }
