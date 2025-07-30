@@ -9,6 +9,7 @@ import { MyMapperProfile } from 'src/common';
 import { AddressModule } from '../address/address.module';
 import { UserRepository } from './repository/user.repository';
 import { AuthModule } from '../auth/auth.module';
+import { BullModule } from '@nestjs/bull';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
@@ -17,6 +18,7 @@ import { AuthModule } from '../auth/auth.module';
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
     }),
+    BullModule.registerQueue({ name: 'mail' }),
   ],
   controllers: [UserController],
   providers: [

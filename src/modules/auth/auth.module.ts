@@ -11,6 +11,7 @@ import { PermissionsEntity } from './entities/permission.entity';
 import { RolesEntity } from './entities/role.entity';
 import { RolesRepository } from './repository/roles.repository';
 import { redisProvider } from './redis.provider';
+import { AuthCronService } from './cron-jobs';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { redisProvider } from './redis.provider';
   controllers: [AuthController],
   providers: [
     redisProvider,
+    AuthCronService,
     AuthService,
     JwtStrategy,
     {

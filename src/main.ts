@@ -34,8 +34,8 @@ async function bootstrap() {
   console.log(`🚀 Application Started on port ${PORT}`);
 
   // Start background tasks
-  runHeartbeat();
-  monitorMemory();
+  // runHeartbeat();
+  // monitorMemory();
 }
 
 bootstrap().catch((error) => {

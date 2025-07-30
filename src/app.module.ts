@@ -1,25 +1,30 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { MulterModule } from '@nestjs/platform-express';
+import { ScheduleModule } from '@nestjs/schedule';
+import { BullModule } from '@nestjs/bull';
+import { join } from 'path';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthMiddleware } from './common';
+import { DatabaseService } from './config/connection.msg';
+import { AppDataSource } from './config/typeorm.config';
+
 import { AuthModule } from './modules/auth/auth.module';
 import { AddressModule } from './modules/address/address.module';
 import { ProductModule } from './modules/product/product.module';
 import { SaleModule } from './modules/sale/sale.module';
-import { DatabaseService } from './config/connection.msg';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppDataSource } from './config/typeorm.config';
-import { ConfigModule } from '@nestjs/config';
-import { AutomapperModule } from '@automapper/nestjs';
-import { AuthMiddleware } from './common';
+import { ProfileModule } from './modules/profile/profile.module';
+import { MailModule } from './modules/mail/mail.module';
+
 import { UserController } from './modules/user/user.controller';
 import { AddressController } from './modules/address/address.controller';
 import { ProductController } from './modules/product/product.controller';
 import { SaleController } from './modules/sale/controllers/sale.controller';
 import { SaleItemController } from './modules/sale/controllers/saleItem.controller';
-import { ProfileModule } from './modules/profile/profile.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -29,10 +34,26 @@ import { MulterModule } from '@nestjs/platform-express';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
-    MulterModule.register({
-      dest: './uploads',
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/public',
     }),
-    AutomapperModule,
+    MulterModule.register({ dest: './uploads' }),
+    ScheduleModule.forRoot(),
+
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD || undefined,
+      },
+    }),
+    BullModule.registerQueue({
+      name: 'mail',
+    }),
+
+    // feature modules
+    MailModule,
     AuthModule,
     AddressModule,
     ProductModule,
@@ -57,7 +78,5 @@ export class AppModule implements NestModule {
         SaleController,
         SaleItemController,
       );
-    // OR for a specific route:
-    // .forRoutes({ path: 'your-route', method: RequestMethod.GET });
   }
 }

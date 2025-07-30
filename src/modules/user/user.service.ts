@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
@@ -7,37 +7,53 @@ import { CreateCustomerDTO } from './dto/create-customer.dto';
 import { UpdateCustomerDTO } from './dto/update-customer.dto';
 import { CustomerResponseDTO } from './dto/response-customer.dto';
 import { CustomerMainDTO } from './dto/main-customer..dto';
-import {
-  CustomNotFoundException,
-  IdParamDto,
-  PaginationRequestDto,
-} from 'src/common';
+import { CustomNotFoundException, IdParamDto, PaginationRequestDto } from 'src/common';
 import { AddressService } from '../address/address.service';
 import { PatchAddressDTO } from '../address/dto/patch/patch-address.dto';
 import { UserRepository } from './repository/user.repository';
 import { CustomConflictException } from 'src/common/exception/conflict.exception';
 import { RolesRepository } from '../auth/repository/roles.repository';
 import { RolesEntity } from '../auth/entities/role.entity';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject('UserRepository') private readonly customerRepo: UserRepository,
     @Inject('RolesRepository') private readonly roleRepo: RolesRepository,
-    private readonly addressService: AddressService,
+    @InjectQueue('mail') private readonly mailQueue: Queue,
     @InjectMapper() private readonly mapper: Mapper,
+    private readonly addressService: AddressService,
   ) { }
 
   async create(dto: CreateCustomerDTO): Promise<CustomerResponseDTO> {
+
     const existingCustomer = await this.customerRepo.findOne({
       where: { email: dto.email },
     });
-    if (existingCustomer)
-      throw new CustomConflictException(
-        'Customer with this email already exists',
-      );
+
+    if (existingCustomer) {
+      throw new CustomConflictException('Customer with this email already exists');
+    }
+
+    const rawPassword = dto.password || this.generateRandomPassword();
+    const hashedPassword = await bcrypt.hash(rawPassword, 10);
+    dto.password = hashedPassword;
+
     const role = await this.roleRepo.findOne({ where: { id: 3 } });
-    return await this.customerRepo.createUser(dto, role);
+    if (!role) {
+      throw new Error('Role not found');
+    }
+    const customer = await this.customerRepo.createUser(dto, role);
+
+    await this.mailQueue.add('send-user-welcome', {
+      email: customer.email,
+      name: customer.name,
+      password: rawPassword,
+    });
+
+    return customer;
   }
 
   async getAllUsers(): Promise<CustomerResponseDTO[]> {
@@ -112,16 +128,6 @@ export class UserService {
     return this.getUsersByStatusAndRole(false, role, pagination);
   }
 
-  // async getActiveAdmins(pagination: PaginationRequestDto) {
-  //   const role = await this.roleRepo.findOne({ where: { id: 3 } });
-  //   return this.getUsersByStatusAndRole(true, role, pagination);
-  // }
-
-  // async getDeactiveAdmins(pagination: PaginationRequestDto) {
-  //   const role = await this.roleRepo.findOne({ where: { id: 3 } });
-  //   return this.getUsersByStatusAndRole(false, role, pagination);
-  // }
-
   async searchByName(term: string): Promise<CustomerResponseDTO[]> {
     const found = await this.customerRepo.queryBuilder(
       'SELECT * FROM customer_entity WHERE name ILIKE $1 or email ILIKE $1',
@@ -144,7 +150,6 @@ export class UserService {
 
     return this.mapper.map(user, CustomerEntity, CustomerResponseDTO);
   }
-
 
   async updateEmail(
     params: IdParamDto,
@@ -212,5 +217,9 @@ export class UserService {
       CustomerMainDTO,
     );
     return this.mapper.map(main, CustomerMainDTO, CustomerResponseDTO);
+  }
+
+  private generateRandomPassword(): string {
+    return Math.random().toString(36).slice(-8);
   }
 }

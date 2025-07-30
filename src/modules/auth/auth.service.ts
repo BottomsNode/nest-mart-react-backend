@@ -46,7 +46,9 @@ export class AuthService {
     const existingToken = await this.redisClient.get(`user_token:${user.id}`);
     if (existingToken) {
       await this.redisClient.del(`user_token:${user.id}`);
-      throw new CustomUnauthorizedException('User already logged in with an active token');
+      throw new CustomUnauthorizedException(
+        'You were active on another device.\nYou have been logged out from the last device.\nPlease log in again.'
+      );
     }
     const payload = {
       id: user.id,
