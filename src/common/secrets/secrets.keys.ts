@@ -1,5 +1,11 @@
 import * as dotenv from 'dotenv';
-dotenv.config({ path: './.env' });
+import { existsSync } from 'fs';
+
+const envPath = `.env.${process.env.NODE_ENV || 'development'}`;
+
+dotenv.config({
+    path: existsSync(envPath) ? envPath : './.env',
+});
 
 export const PORT = process.env.PORT;
 export const DB_NAME = process.env.DB_NAME;
@@ -25,4 +31,4 @@ export const MAIL_HOST = process.env.MAIL_HOST;
 export const MAIL_PORT = process.env.MAIL_PORT;
 export const MAIL_USER = process.env.MAIL_USER;
 export const MAIL_PASS = process.env.MAIL_PASS;
-export const MAIL_SECURE = process.env.MAIL_SECURE
+export const MAIL_SECURE = process.env.MAIL_SECURE;

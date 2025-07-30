@@ -7,8 +7,10 @@ export class MailService {
     constructor(private readonly mailerService: MailerService) { }
 
     async sendWelcomeEmail(email: string, name: string, password: string) {
-        const logoUrl = `http://${DB_HOST}:${PORT}/public/img/logo.jpg`;
+        const logoUrl = `http://${process.env.DB_HOST}:${process.env.PORT}/public/img/logo.jpg`;
         const websiteUrl = `http://${DB_HOST}:${PORT}`;
+        console.log(logoUrl)
+        console.log(websiteUrl)
 
         const currentYear = new Date().getFullYear();
 

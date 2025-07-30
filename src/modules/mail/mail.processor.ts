@@ -11,6 +11,7 @@ export class MailProcessor {
         const { email, name, password } = job.data;
         try {
             await this.mailService.sendWelcomeEmail(email, name, password);
+            console.log("Mail Send")
         } catch (error) {
             console.error(`[Queue] Failed to send email to ${email}:`, error);
         }

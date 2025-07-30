@@ -28,7 +28,10 @@ import { SaleItemController } from './modules/sale/controllers/saleItem.controll
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+    }),
     TypeOrmModule.forRoot(AppDataSource.options),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
