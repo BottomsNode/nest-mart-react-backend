@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { DB_HOST, PORT } from 'src/common';
+import { CLIENT_URL, DB_HOST, PORT } from 'src/common';
 
 @Injectable()
 export class MailService {
@@ -8,9 +8,7 @@ export class MailService {
 
     async sendWelcomeEmail(email: string, name: string, password: string) {
         const logoUrl = `http://${process.env.DB_HOST}:${process.env.PORT}/public/img/logo.jpg`;
-        const websiteUrl = `http://${DB_HOST}:${PORT}`;
-        console.log(logoUrl)
-        console.log(websiteUrl)
+        const websiteUrl = `http://${CLIENT_URL}`;
 
         const currentYear = new Date().getFullYear();
 

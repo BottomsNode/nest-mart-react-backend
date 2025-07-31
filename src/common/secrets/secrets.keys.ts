@@ -26,7 +26,7 @@ export const REDIS_HOST = process.env.REDIS_HOST;
 export const REDIS_PORT = process.env.REDIS_PORT;
 export const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
 export const PUBLIC_KEY = 'isPublic';
-
+export const CLIENT_URL = process.env.CLIENT_URL;
 export const MAIL_HOST = process.env.MAIL_HOST;
 export const MAIL_PORT = process.env.MAIL_PORT;
 export const MAIL_USER = process.env.MAIL_USER;
