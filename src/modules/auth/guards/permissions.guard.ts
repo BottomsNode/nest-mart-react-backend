@@ -22,12 +22,10 @@ export class PermissionGuard implements CanActivate {
     const userPermissions: string[] = Array.isArray(user.permission)
       ? user.permission
       : [];
-    // console.log('User permissions:', userPermissions);
 
     const hasPermissions = requiredPermissions.every((p) =>
       userPermissions.includes(p),
     );
-    // console.log('Has required permissions?', hasPermissions);
 
     if (!hasPermissions) {
       throw new CustomForbiddenException(

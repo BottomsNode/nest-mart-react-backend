@@ -4,10 +4,11 @@ import { CLIENT_URL, DB_HOST, PORT } from 'src/common';
 
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService) { }
+  constructor(private readonly mailerService: MailerService,
+  private readonly logoUrl = `https://drive.google.com/file/d/1olnU72H9fxFb0XzmeRyLyDzFbkV94fqj/view?usp=drive_link`
+  ) { }
 
   async sendWelcomeEmail(email: string, name: string, password: string) {
-    const logoUrl = `http://${process.env.DB_HOST}:${process.env.PORT}/public/img/logo.jpg`;
     const websiteUrl = `http://${CLIENT_URL}`;
 
     const currentYear = new Date().getFullYear();
@@ -29,7 +30,7 @@ export class MailService {
             <tr style="background-color: #2f855a;">
               <td style="padding: 20px; text-align: center;">
                 <img
-                  src="${logoUrl}"
+                  src="${this.logoUrl}"
                   alt="Company Logo"
                   width="120"
                   style="display: block; margin: 0 auto;" />
@@ -63,7 +64,7 @@ export class MailService {
             <!-- Footer -->
             <tr style="background-color: #f1f1f1;">
               <td style="padding: 20px; text-align: center; color: #999; font-size: 12px;">
-                &copy; ${currentYear} Your Company Name. All rights reserved.
+                &copy; ${currentYear} Nest Mart Shop. All rights reserved.
                 <br />
                 <a href="${websiteUrl}" style="color: #2f855a; text-decoration: none;">Visit our website</a>
               </td>
@@ -90,13 +91,42 @@ export class MailService {
     deletedCount: number,
     timestamp: string,
   ) {
+
     const htmlContent = `
-        <h3>🔒 Redis Token Cleanup Report</h3>
-        <p><strong>Time:</strong> ${timestamp}</p>
-        <p><strong>Total Tokens Checked:</strong> ${totalChecked}</p>
-        <p><strong>Expired Tokens Removed:</strong> ${deletedCount}</p>
-        <p>— Nest-Mart Backend System</p>
-    `;
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+      <div style="background-color: #2d3748; color: #ffffff; padding: 20px; text-align: center;">
+        <img src="${this.logoUrl}" alt="Nest-Mart Logo" style="max-height: 50px; margin-bottom: 10px;" />
+        <h2 style="margin: 0;">🔒 Nest-Mart: Token Cleanup Report</h2>
+      </div>
+
+      <div style="padding: 20px; color: #333;">
+        <p>Dear Admin,</p>
+        <p>The scheduled Redis token cleanup task has been completed. Below are the details:</p>
+
+        <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><strong>🕒 Time</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${timestamp}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><strong>🔍 Total Tokens Checked</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${totalChecked}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><strong>🗑️ Expired Tokens Removed</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${deletedCount}</td>
+          </tr>
+        </table>
+
+        <p style="margin-top: 20px;">If you were not expecting this report, please verify your system’s cron job configuration.</p>
+        <p>Regards,<br/>Nest-Mart Backend System</p>
+      </div>
+
+      <div style="background-color: #f1f5f9; color: #6b7280; padding: 16px; text-align: center; font-size: 12px;">
+        This is an automated message. Please do not reply directly to this email.
+      </div>
+    </div>
+  `;
 
     await this.mailerService.sendMail({
       to: email,

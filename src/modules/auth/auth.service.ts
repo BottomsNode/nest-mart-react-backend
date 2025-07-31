@@ -64,8 +64,8 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(payload);
-
     const decoded = jwt.decode(token) as jwt.JwtPayload;
+
     const now = Math.floor(Date.now() / 1000);
     const ttl = decoded.exp - now;
 

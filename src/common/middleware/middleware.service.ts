@@ -2,15 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import Redis from 'ioredis';
-import {
-  AuthenticatedUser,
-  CustomBadGatewayException,
-  CustomUnauthorizedException,
-  jwtSecret,
-  REDIS_HOST,
-  REDIS_PASSWORD,
-  REDIS_PORT,
-} from 'src/common';
+import { AuthenticatedUser, CustomBadGatewayException, CustomUnauthorizedException, jwtSecret, REDIS_HOST, REDIS_PASSWORD, REDIS_PORT } from 'src/common';
 
 let redisClient: Redis | null = null;
 
