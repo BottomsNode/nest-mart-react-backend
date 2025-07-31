@@ -4,6 +4,7 @@ import { LoginDTO } from './dto/login.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomUnauthorizedException, RequestWithUser } from 'src/common';
+import { Request } from 'express';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -11,8 +12,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Post('login')
-  async login(@Body() body: LoginDTO) {
-    return this.authService.login(body);
+  async login(@Body() body: LoginDTO, @Req() req: Request) {
+    return this.authService.login(body, req);
   }
 
   @Post('logout')

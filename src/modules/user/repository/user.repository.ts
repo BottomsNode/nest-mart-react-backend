@@ -27,16 +27,26 @@ export class UserRepository extends BaseRepository<CustomerEntity> {
     });
   }
 
+  // async createUser(
+  //   dto: CreateCustomerDTO,
+  //   role: RolesEntity,
+  // ): Promise<CustomerResponseDTO> {
+  //   const hashedPassword = await bcrypt.hash(dto.password, 10);
+  //   const entity = this.userRepo.create(dto);
+  //   entity.password = hashedPassword;
+  //   entity.role = role;
+  //   const savedEntity = await this.create(entity);
+  //   return this.mapper.map(savedEntity, CustomerEntity, CustomerResponseDTO);
+  // }
   async createUser(
     dto: CreateCustomerDTO,
     role: RolesEntity,
-  ): Promise<CustomerResponseDTO> {
+  ): Promise<CustomerEntity> {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     const entity = this.userRepo.create(dto);
     entity.password = hashedPassword;
     entity.role = role;
-    const savedEntity = await this.create(entity);
-    return this.mapper.map(savedEntity, CustomerEntity, CustomerResponseDTO);
+    return await this.create(entity);
   }
 
   async queryBuilder(

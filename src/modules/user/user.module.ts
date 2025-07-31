@@ -11,10 +11,12 @@ import { UserRepository } from './repository/user.repository';
 import { AuthModule } from '../auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { MailService } from '../mail/mail.service';
+import { CustomerActivityLogModule } from '../logs/log/customer-activity-log.module';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
     AddressModule,
+    CustomerActivityLogModule,
     TypeOrmModule.forFeature([CustomerEntity]),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
@@ -33,4 +35,4 @@ import { MailService } from '../mail/mail.service';
   ],
   exports: [UserService],
 })
-export class UserModule {}
+export class UserModule { }

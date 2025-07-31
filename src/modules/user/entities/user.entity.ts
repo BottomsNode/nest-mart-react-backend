@@ -11,6 +11,7 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
+import { CustomerActivityLogEntity } from 'src/modules/logs/entities/user-activity-log.entity';
 
 @Entity()
 export class CustomerEntity extends MyBaseEntity {
@@ -49,4 +50,7 @@ export class CustomerEntity extends MyBaseEntity {
   @AutoMap()
   @OneToMany(() => SaleEntity, (sale) => sale.customer)
   sales: SaleEntity[];
+
+  @OneToMany(() => CustomerActivityLogEntity, (log) => log.customer)
+  logs: CustomerActivityLogEntity[];
 }

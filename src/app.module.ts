@@ -25,6 +25,7 @@ import { AddressController } from './modules/address/address.controller';
 import { ProductController } from './modules/product/product.controller';
 import { SaleController } from './modules/sale/controllers/sale.controller';
 import { SaleItemController } from './modules/sale/controllers/saleItem.controller';
+import { CustomerActivityLogModule } from './modules/logs/log/customer-activity-log.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { SaleItemController } from './modules/sale/controllers/saleItem.controll
 
     // feature modules
     MailModule,
+    CustomerActivityLogModule,
     AuthModule,
     AddressModule,
     ProductModule,

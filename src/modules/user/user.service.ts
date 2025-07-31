@@ -17,6 +17,8 @@ import { RolesEntity } from '../auth/entities/role.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { MailService } from '../mail/mail.service';
+import { CustomerActivityLogService } from '../logs/log/customer-activity-log.service';
+import { Request } from 'express';
 
 @Injectable()
 export class UserService {
@@ -26,6 +28,7 @@ export class UserService {
     @InjectQueue('mail') private readonly mailQueue: Queue,
     @InjectMapper() private readonly mapper: Mapper,
     private readonly addressService: AddressService,
+    private readonly logService: CustomerActivityLogService,
     private readonly mailService: MailService
   ) { }
 
@@ -57,7 +60,7 @@ export class UserService {
 
   //   return customer;
   // }
-  async create(dto: CreateCustomerDTO): Promise<CustomerResponseDTO> {
+  async create(dto: CreateCustomerDTO, req?: Request): Promise<CustomerResponseDTO> {
     const existingCustomer = await this.customerRepo.findOne({
       where: { email: dto.email },
     });
@@ -75,9 +78,27 @@ export class UserService {
     }
 
     const customer = await this.customerRepo.createUser(dto, role);
-    await this.mailService.sendWelcomeEmail(customer.email, customer.name, rawPassword);
 
-    return customer;
+    await this.mailService.sendWelcomeEmail(
+      customer.email,
+      customer.name,
+      rawPassword,
+    );
+
+    try {
+      await this.logService.log(
+        customer,
+        'User Account Created',
+        {
+          ip: req?.ip || 'unknown',
+          userAgent: req?.headers['user-agent'] || 'unknown',
+        }
+      );
+    } catch (err) {
+      console.error('Failed to log user creation:', err);
+    }
+
+    return this.mapper.map(customer, CustomerEntity, CustomerResponseDTO);
   }
 
   async getAllUsers(): Promise<CustomerResponseDTO[]> {
@@ -217,6 +238,10 @@ export class UserService {
       where: { email },
       relations: ['address'],
     });
+  }
+
+  async findById(id: number) {
+    return await this.customerRepo.findOne({ where: { id } });
   }
 
   async updateUserAddress(

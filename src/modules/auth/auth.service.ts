@@ -7,12 +7,15 @@ import Redis from 'ioredis';
 import { LoginDTO } from './dto/login.dto';
 import { CustomUnauthorizedException } from 'src/common/exception/unauthorized.exception';
 import { CustomNotFoundException } from 'src/common';
+import { CustomerActivityLogService } from '../logs/log/customer-activity-log.service';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly logService: CustomerActivityLogService,
     @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
   ) { }
 
@@ -41,8 +44,9 @@ export class AuthService {
     }
   }
 
-  async login(body: LoginDTO) {
+  async login(body: LoginDTO, req?: Request) {
     const user = await this.validateUser(body.email, body.password);
+
     const existingToken = await this.redisClient.get(`user_token:${user.id}`);
     if (existingToken) {
       await this.redisClient.del(`user_token:${user.id}`);
@@ -50,6 +54,7 @@ export class AuthService {
         'You were active on another device.\nYou have been logged out from the last device.\nPlease log in again.'
       );
     }
+
     const payload = {
       id: user.id,
       email: user.email,
@@ -57,6 +62,7 @@ export class AuthService {
       role: user.role.name,
       permissions: user.role.permissions,
     };
+
     const token = this.jwtService.sign(payload);
 
     const decoded = jwt.decode(token) as jwt.JwtPayload;
@@ -64,6 +70,20 @@ export class AuthService {
     const ttl = decoded.exp - now;
 
     await this.redisClient.set(`user_token:${user.id}`, token, 'EX', ttl);
+
+    try {
+      await this.logService.log(
+        await this.userService.findById(user.id),
+        'User Logged In',
+        {
+          ip: req?.ip || 'unknown',
+          userAgent: req?.headers['user-agent'] || 'unknown',
+        }
+      );
+    } catch (err) {
+      console.error('Failed to log login activity:', err);
+    }
+
     return token;
   }
 
