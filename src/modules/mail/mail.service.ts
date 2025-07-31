@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { CLIENT_URL, DB_HOST, PORT } from 'src/common';
+import { CLIENT_URL, DB_HOST, logoUrl, PORT } from 'src/common';
 
 @Injectable()
 export class MailService {
   constructor(private readonly mailerService: MailerService,
-  private readonly logoUrl = `https://drive.google.com/file/d/1olnU72H9fxFb0XzmeRyLyDzFbkV94fqj/view?usp=drive_link`
   ) { }
 
   async sendWelcomeEmail(email: string, name: string, password: string) {
     const websiteUrl = `http://${CLIENT_URL}`;
-
     const currentYear = new Date().getFullYear();
-
     const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -30,7 +27,7 @@ export class MailService {
             <tr style="background-color: #2f855a;">
               <td style="padding: 20px; text-align: center;">
                 <img
-                  src="${this.logoUrl}"
+                  src="${logoUrl}"
                   alt="Company Logo"
                   width="120"
                   style="display: block; margin: 0 auto;" />
@@ -95,7 +92,7 @@ export class MailService {
     const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
       <div style="background-color: #2d3748; color: #ffffff; padding: 20px; text-align: center;">
-        <img src="${this.logoUrl}" alt="Nest-Mart Logo" style="max-height: 50px; margin-bottom: 10px;" />
+        <img src="${logoUrl}" alt="Nest-Mart Logo" style="max-height: 50px; margin-bottom: 10px;" />
         <h2 style="margin: 0;">🔒 Nest-Mart: Token Cleanup Report</h2>
       </div>
 
