@@ -17,8 +17,8 @@ import { RolesEntity } from '../auth/entities/role.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { MailService } from '../mail/mail.service';
-import { CustomerActivityLogService } from '../logs/log/customer-activity-log.service';
 import { Request } from 'express';
+import { CustomerActivityLogService } from '../logs/customer-activity-log.service';
 
 @Injectable()
 export class UserService {

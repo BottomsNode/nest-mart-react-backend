@@ -7,8 +7,8 @@ import Redis from 'ioredis';
 import { LoginDTO } from './dto/login.dto';
 import { CustomUnauthorizedException } from 'src/common/exception/unauthorized.exception';
 import { CustomNotFoundException } from 'src/common';
-import { CustomerActivityLogService } from '../logs/log/customer-activity-log.service';
 import { Request } from 'express';
+import { CustomerActivityLogService } from '../logs/customer-activity-log.service';
 
 @Injectable()
 export class AuthService {

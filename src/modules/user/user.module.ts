@@ -11,7 +11,7 @@ import { UserRepository } from './repository/user.repository';
 import { AuthModule } from '../auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { MailService } from '../mail/mail.service';
-import { CustomerActivityLogModule } from '../logs/log/customer-activity-log.module';
+import { CustomerActivityLogModule } from '../logs/customer-activity-log.module';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
