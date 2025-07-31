@@ -16,6 +16,7 @@ import { RolesRepository } from '../auth/repository/roles.repository';
 import { RolesEntity } from '../auth/entities/role.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UserService {
@@ -25,10 +26,38 @@ export class UserService {
     @InjectQueue('mail') private readonly mailQueue: Queue,
     @InjectMapper() private readonly mapper: Mapper,
     private readonly addressService: AddressService,
+    private readonly mailService: MailService
   ) { }
 
-  async create(dto: CreateCustomerDTO): Promise<CustomerResponseDTO> {
+  // async create(dto: CreateCustomerDTO): Promise<CustomerResponseDTO> {
 
+  //   const existingCustomer = await this.customerRepo.findOne({
+  //     where: { email: dto.email },
+  //   });
+
+  //   if (existingCustomer) {
+  //     throw new CustomConflictException('Customer with this email already exists');
+  //   }
+
+  //   const rawPassword = dto.password || this.generateRandomPassword();
+  //   const hashedPassword = await bcrypt.hash(rawPassword, 10);
+  //   dto.password = hashedPassword;
+
+  //   const role = await this.roleRepo.findOne({ where: { id: 3 } });
+  //   if (!role) {
+  //     throw new Error('Role not found');
+  //   }
+  //   const customer = await this.customerRepo.createUser(dto, role);
+
+  //   await this.mailQueue.add('send-user-welcome', {
+  //     email: customer.email,
+  //     name: customer.name,
+  //     password: rawPassword,
+  //   });
+
+  //   return customer;
+  // }
+  async create(dto: CreateCustomerDTO): Promise<CustomerResponseDTO> {
     const existingCustomer = await this.customerRepo.findOne({
       where: { email: dto.email },
     });
@@ -45,16 +74,14 @@ export class UserService {
     if (!role) {
       throw new Error('Role not found');
     }
+
     const customer = await this.customerRepo.createUser(dto, role);
 
-    await this.mailQueue.add('send-user-welcome', {
-      email: customer.email,
-      name: customer.name,
-      password: rawPassword,
-    });
+    await this.mailService.sendWelcomeEmail(customer.email, customer.name, rawPassword);
 
     return customer;
   }
+
 
   async getAllUsers(): Promise<CustomerResponseDTO[]> {
     const users = await this.customerRepo.find({ relations: ['address'] });

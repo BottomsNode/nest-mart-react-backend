@@ -10,6 +10,7 @@ import { AddressModule } from '../address/address.module';
 import { UserRepository } from './repository/user.repository';
 import { AuthModule } from '../auth/auth.module';
 import { BullModule } from '@nestjs/bull';
+import { MailService } from '../mail/mail.service';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
@@ -23,6 +24,7 @@ import { BullModule } from '@nestjs/bull';
   controllers: [UserController],
   providers: [
     UserService,
+    MailService,
     MyMapperProfile,
     {
       provide: 'UserRepository',
