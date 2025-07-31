@@ -3,7 +3,7 @@
 /node_modules
 /build
 /src/database
-/data
+# /data
 /uploads
 /dist
 

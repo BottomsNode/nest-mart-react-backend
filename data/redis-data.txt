@@ -1,0 +1,5 @@
+redis-cli -h redis-19436.c12.us-east-1-4.ec2.redns.redis-cloud.com -p 19436 -a KPHrksohE33ojl1ZHFofE1aQETUSE9rW
+
+KEYS user_token:*
+
+GET user_token:1

@@ -1,0 +1,10 @@
+for Development
+yarn start:dev
+
+for Production
+yarn build
+NODE_ENV=production node dist/main.js
+
+for Migrations
+NODE_ENV=development npm run migration:run
+NODE_ENV=production npm run migration:run
