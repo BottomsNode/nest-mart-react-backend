@@ -11,7 +11,7 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-import { CustomerActivityLogEntity } from 'src/modules/logs/entities/user-activity-log.entity';
+import { CustomerActivityLogEntity } from '../../logs/entities/user-activity-log.entity';
 
 @Entity()
 export class CustomerEntity extends MyBaseEntity {
