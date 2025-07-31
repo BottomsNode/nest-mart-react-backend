@@ -3,6 +3,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { MailService } from './mail.service';
 import { MailProcessor } from './mail.processor';
 import { MAIL_HOST, MAIL_PASS, MAIL_PORT, MAIL_SECURE, MAIL_USER } from 'src/common';
+import { AuthCronService } from '../auth/cron-jobs';
+import { redisProvider } from '../auth/redis.provider';
 
 @Module({
     imports: [
@@ -21,7 +23,7 @@ import { MAIL_HOST, MAIL_PASS, MAIL_PORT, MAIL_SECURE, MAIL_USER } from 'src/com
             },
         }),
     ],
-    providers: [MailService, MailProcessor],
-    exports: [MailService],
+    providers: [MailService, MailProcessor, redisProvider, AuthCronService],
+    exports: [MailService, AuthCronService,redisProvider],
 })
 export class MailModule { }

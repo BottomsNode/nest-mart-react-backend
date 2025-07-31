@@ -13,10 +13,12 @@ import { RolesRepository } from './repository/roles.repository';
 import { redisProvider } from './redis.provider';
 import { AuthCronService } from './cron-jobs';
 import { CustomerActivityLogModule } from '../log/customer-activity-log.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
     UserModule,
+    MailModule,
     CustomerActivityLogModule,
     TypeOrmModule.forFeature([PermissionsEntity, RolesEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -27,8 +29,6 @@ import { CustomerActivityLogModule } from '../log/customer-activity-log.module';
   ],
   controllers: [AuthController],
   providers: [
-    redisProvider,
-    AuthCronService,
     AuthService,
     JwtStrategy,
     {

@@ -12,9 +12,11 @@ import { AuthModule } from '../auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { MailService } from '../mail/mail.service';
 import { CustomerActivityLogModule } from '../log/customer-activity-log.module';
+import { MailModule } from '../mail/mail.module';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
+    MailModule,
     AddressModule,
     CustomerActivityLogModule,
     TypeOrmModule.forFeature([CustomerEntity]),
@@ -26,7 +28,6 @@ import { CustomerActivityLogModule } from '../log/customer-activity-log.module';
   controllers: [UserController],
   providers: [
     UserService,
-    MailService,
     MyMapperProfile,
     {
       provide: 'UserRepository',

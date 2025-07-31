@@ -4,15 +4,15 @@ import { CLIENT_URL, DB_HOST, PORT } from 'src/common';
 
 @Injectable()
 export class MailService {
-    constructor(private readonly mailerService: MailerService) { }
+  constructor(private readonly mailerService: MailerService) { }
 
-    async sendWelcomeEmail(email: string, name: string, password: string) {
-        const logoUrl = `http://${process.env.DB_HOST}:${process.env.PORT}/public/img/logo.jpg`;
-        const websiteUrl = `http://${CLIENT_URL}`;
+  async sendWelcomeEmail(email: string, name: string, password: string) {
+    const logoUrl = `http://${process.env.DB_HOST}:${process.env.PORT}/public/img/logo.jpg`;
+    const websiteUrl = `http://${CLIENT_URL}`;
 
-        const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear();
 
-        const htmlContent = `
+    const htmlContent = `
 <!DOCTYPE html>
 <html>
   <head>
@@ -77,10 +77,32 @@ export class MailService {
 </html>
     `;
 
-        await this.mailerService.sendMail({
-            to: email,
-            subject: 'Welcome to Our Platform',
-            html: htmlContent,
-        });
-    }
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Welcome to Our Platform',
+      html: htmlContent,
+    });
+  }
+
+  async sendTokenCleanupNotification(
+    email: string,
+    totalChecked: number,
+    deletedCount: number,
+    timestamp: string,
+  ) {
+    const htmlContent = `
+        <h3>🔒 Redis Token Cleanup Report</h3>
+        <p><strong>Time:</strong> ${timestamp}</p>
+        <p><strong>Total Tokens Checked:</strong> ${totalChecked}</p>
+        <p><strong>Expired Tokens Removed:</strong> ${deletedCount}</p>
+        <p>— Nest-Mart Backend System</p>
+    `;
+
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Redis Token Cleanup Notification',
+      html: htmlContent,
+    });
+  }
+
 }
