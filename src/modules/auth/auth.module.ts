@@ -13,7 +13,6 @@ import { RolesRepository } from './repository/roles.repository';
 import { redisProvider } from './redis.provider';
 import { AuthCronService } from './cron-jobs';
 import { CustomerActivityLogModule } from '../logs/log/customer-activity-log.module';
-import { UserRepository } from '../user/repository/user.repository';
 
 @Module({
   imports: [
