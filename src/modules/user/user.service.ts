@@ -18,7 +18,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { MailService } from '../mail/mail.service';
 import { Request } from 'express';
-import { CustomerActivityLogService } from '../logs/customer-activity-log.service';
+import { CustomerActivityLogService } from '../log/customer-activity-log.service';
 
 @Injectable()
 export class UserService {

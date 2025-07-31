@@ -8,7 +8,7 @@ import { LoginDTO } from './dto/login.dto';
 import { CustomUnauthorizedException } from 'src/common/exception/unauthorized.exception';
 import { CustomNotFoundException } from 'src/common';
 import { Request } from 'express';
-import { CustomerActivityLogService } from '../logs/customer-activity-log.service';
+import { CustomerActivityLogService } from '../log/customer-activity-log.service';
 
 @Injectable()
 export class AuthService {
