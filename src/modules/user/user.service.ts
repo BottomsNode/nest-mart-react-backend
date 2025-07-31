@@ -66,9 +66,8 @@ export class UserService {
       throw new CustomConflictException('Customer with this email already exists');
     }
 
-    const rawPassword = dto.password || this.generateRandomPassword();
-    const hashedPassword = await bcrypt.hash(rawPassword, 10);
-    dto.password = hashedPassword;
+    const rawPassword = this.generateRandomPassword();
+    dto.password = rawPassword;
 
     const role = await this.roleRepo.findOne({ where: { id: 3 } });
     if (!role) {
@@ -76,12 +75,10 @@ export class UserService {
     }
 
     const customer = await this.customerRepo.createUser(dto, role);
-
     await this.mailService.sendWelcomeEmail(customer.email, customer.name, rawPassword);
 
     return customer;
   }
-
 
   async getAllUsers(): Promise<CustomerResponseDTO[]> {
     const users = await this.customerRepo.find({ relations: ['address'] });
@@ -246,7 +243,34 @@ export class UserService {
     return this.mapper.map(main, CustomerMainDTO, CustomerResponseDTO);
   }
 
-  private generateRandomPassword(): string {
-    return Math.random().toString(36).slice(-8);
+  private generateRandomPassword(length = 8): string {
+    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lower = 'abcdefghijklmnopqrstuvwxyz';
+    const digit = '0123456789';
+    const special = '@#';
+    const all = upper + lower + digit + special;
+
+    if (length < 4) {
+      throw new Error('Password length must be at least 4 characters');
+    }
+
+    const password = [
+      upper[Math.floor(Math.random() * upper.length)],
+      lower[Math.floor(Math.random() * lower.length)],
+      digit[Math.floor(Math.random() * digit.length)],
+      special[Math.floor(Math.random() * special.length)],
+    ];
+
+    while (password.length < length) {
+      password.push(all[Math.floor(Math.random() * all.length)]);
+    }
+
+    for (let i = password.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [password[i], password[j]] = [password[j], password[i]];
+    }
+
+    return password.join('');
   }
+
 }

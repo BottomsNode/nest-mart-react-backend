@@ -28,5 +28,6 @@ export class CustomerResponseDTO extends ResponseCommonDto {
   @AutoMap()
   @ApiProperty()
   deletedAt?: Date;
+  @AutoMap()
   password: string;
 }
