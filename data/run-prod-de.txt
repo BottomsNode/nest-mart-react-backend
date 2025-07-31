@@ -6,5 +6,8 @@ yarn build
 NODE_ENV=production node dist/main.js
 
 for Migrations
-NODE_ENV=development npm run migration:run
-NODE_ENV=production npm run migration:run
+NODE_ENV=development yarn run migration:run
+NODE_ENV=production yarn run migration:run
+
+for seeders
+NODE_ENV=production yarn run seed

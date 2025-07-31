@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { CLIENT_URL, DB_HOST, logoUrl, PORT } from 'src/common';
+import { CLIENT_URL, logoUrl } from 'src/common';
 
 @Injectable()
 export class MailService {
@@ -26,12 +26,6 @@ export class MailService {
             <!-- Header -->
             <tr style="background-color: #2f855a;">
               <td style="padding: 20px; text-align: center;">
-                <img
-                  src="${logoUrl}"
-                  alt="Company Logo"
-                  width="120"
-                  style="display: block; margin: 0 auto;" />
-              </td>
             </tr>
 
             <!-- Body -->
@@ -92,7 +86,6 @@ export class MailService {
     const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
       <div style="background-color: #2d3748; color: #ffffff; padding: 20px; text-align: center;">
-        <img src="${logoUrl}" alt="Nest-Mart Logo" style="max-height: 50px; margin-bottom: 10px;" />
         <h2 style="margin: 0;">🔒 Nest-Mart: Token Cleanup Report</h2>
       </div>
 

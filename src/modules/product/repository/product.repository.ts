@@ -39,29 +39,20 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
   async listProducts(
     page: number = Pagination_Length.START,
     limit: number = Pagination_Length.VERY_SMALL,
-    flag: boolean = true,
+    status: number = PRODUCT_STATUS.ACTIVE,
   ): Promise<{
-    products: ProductResponseDTO[];
+    products: ProductEntity[];
     count: number;
     totalPages: number;
   }> {
     const [products, count] = await this.productRepo.findAndCount({
-      // where: {
-      //   status: Number(
-      //     flag === true ? PRODUCT_STATUS.ACTIVE : PRODUCT_STATUS.INACTIVE,
-      //   ),
-      // },
+      where: { status },
       take: limit,
       skip: (page - 1) * limit,
     });
 
-    const product_mapped = this.mapper.mapArray(
-      products,
-      ProductEntity,
-      ProductResponseDTO,
-    );
     const totalPages = Math.ceil(count / limit);
-    return { products: product_mapped, count, totalPages };
+    return { products, count, totalPages };
   }
 
   async queryBuilder(

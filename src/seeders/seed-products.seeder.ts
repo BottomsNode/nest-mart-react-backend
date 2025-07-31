@@ -20,7 +20,7 @@ export async function seedProducts(dataSource: DataSource) {
     // await productRepository.delete({});
 
     const products = [];
-    const productCount = 100;
+    const productCount = 50;
 
     // Generate random products using Faker
     for (let i = 0; i < productCount; i++) {

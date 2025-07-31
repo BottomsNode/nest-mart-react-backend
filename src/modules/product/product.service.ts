@@ -93,48 +93,39 @@ export class ProductService {
     await this.productRepo.delete(params.Id);
   }
 
-  async getActiveProducts(pagination: PaginationRequestDto): Promise<{
-    products: ProductResponseDTO[];
-    totalRecords: number;
-    totalPages: number;
-  }> {
+  async getActiveProducts(pagination: PaginationRequestDto) {
     const data = await this.productRepo.listProducts(
       pagination.page,
       pagination.limit,
+      PRODUCT_STATUS.ACTIVE,
     );
-    const mappedProducts = this.mapper.mapArray(
-      data.products,
-      ProductEntity,
-      ProductResponseDTO,
-    );
+
+    const mapped = this.mapper.mapArray(data.products, ProductEntity, ProductResponseDTO);
+
     return {
-      products: mappedProducts,
+      products: mapped,
       totalRecords: data.count,
       totalPages: data.totalPages,
     };
   }
 
-  async getDeactiveProducts(pagination: PaginationRequestDto): Promise<{
-    products: ProductResponseDTO[];
-    totalRecords: number;
-    totalPages: number;
-  }> {
+
+  async getDeactiveProducts(pagination: PaginationRequestDto) {
     const data = await this.productRepo.listProducts(
       pagination.page,
       pagination.limit,
-      false,
+      PRODUCT_STATUS.INACTIVE,
     );
-    const mappedProducts = this.mapper.mapArray(
-      data.products,
-      ProductEntity,
-      ProductResponseDTO,
-    );
+
+    const mapped = this.mapper.mapArray(data.products, ProductEntity, ProductResponseDTO);
+
     return {
-      products: mappedProducts,
+      products: mapped,
       totalRecords: data.count,
       totalPages: data.totalPages,
     };
   }
+
 
   async setStatus(params: IdParamDto, status: PRODUCT_STATUS): Promise<ProductResponseDTO> {
     const product = await this.productRepo.findOne({
@@ -147,7 +138,7 @@ export class ProductService {
     // console.log("-------------------------------",status)
     // console.log(product.status)
 
-    const saved = await this.productRepo.update(params.Id,product);
+    const saved = await this.productRepo.update(params.Id, product);
 
     const main = this.mapper.map(saved, ProductEntity, ProductMainDTO);
     return this.mapper.map(main, ProductMainDTO, ProductResponseDTO);
