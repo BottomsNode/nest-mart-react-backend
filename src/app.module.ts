@@ -7,25 +7,25 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bull';
 import { join } from 'path';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthMiddleware } from './common';
-import { DatabaseService } from './config/connection.msg';
-import { AppDataSource } from './config/typeorm.config';
+import { AppController } from 'src/app.controller';
+import { AppService } from 'src/app.service';
+import { AuthMiddleware } from 'src/common';
+import { DatabaseService } from 'src/config/connection.msg';
+import { AppDataSource } from 'src/config/typeorm.config';
 
-import { AuthModule } from './modules/auth/auth.module';
-import { AddressModule } from './modules/address/address.module';
-import { ProductModule } from './modules/product/product.module';
-import { SaleModule } from './modules/sale/sale.module';
-import { ProfileModule } from './modules/profile/profile.module';
-import { MailModule } from './modules/mail/mail.module';
+import { AuthModule } from 'src/modules/auth/auth.module';
+import { AddressModule } from 'src/modules/address/address.module';
+import { ProductModule } from 'src/modules/product/product.module';
+import { SaleModule } from 'src/modules/sale/sale.module';
+import { ProfileModule } from 'src/modules/profile/profile.module';
+import { MailModule } from 'src/modules/mail/mail.module';
 
-import { UserController } from './modules/user/user.controller';
-import { AddressController } from './modules/address/address.controller';
-import { ProductController } from './modules/product/product.controller';
-import { SaleController } from './modules/sale/controllers/sale.controller';
-import { SaleItemController } from './modules/sale/controllers/saleItem.controller';
-import { CustomerActivityLogModule } from './modules/logs/customer-activity-log.module';
+import { UserController } from 'src/modules/user/user.controller';
+import { AddressController } from 'src/modules/address/address.controller';
+import { ProductController } from 'src/modules/product/product.controller';
+import { SaleController } from 'src/modules/sale/controllers/sale.controller';
+import { SaleItemController } from 'src/modules/sale/controllers/saleItem.controller';
+import { CustomerActivityLogModule } from 'src/modules/logs/customer-activity-log.module';
 
 @Module({
   imports: [
@@ -42,7 +42,7 @@ import { CustomerActivityLogModule } from './modules/logs/customer-activity-log.
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/public',
     }),
-    MulterModule.register({ dest: './uploads' }),
+    MulterModule.register({ dest: 'src/uploads' }),
     ScheduleModule.forRoot(),
 
     BullModule.forRoot({
