@@ -1,1 +1,0 @@
-npx ts-node -r tsconfig-paths/register src/seeder/seeder.main.ts
