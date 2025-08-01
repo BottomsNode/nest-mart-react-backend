@@ -12,7 +12,7 @@ export class AuthCronService {
         @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
     ) { }
 
-    @Cron('0 */1 * * *')
+    @Cron('0 0 * * *')
     async cleanExpiredTokens() {
         const timestamp = new Date().toLocaleString();
         this.logger.log(`Token cleanup started at ${timestamp}`);
