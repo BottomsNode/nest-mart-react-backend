@@ -16,7 +16,6 @@ import {
   ApiTags,
   ApiOperation,
   ApiResponse,
-  ApiBody,
 } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
@@ -34,7 +33,7 @@ import { PermissionGuard } from '../auth/guards/permissions.guard';
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiBearerAuth()
@@ -107,7 +106,6 @@ export class UserController {
     return this.userService.setActiveStatus(params, true);
   }
 
-  
   @ApiBearerAuth()
   @Put(':Id/deactivate')
   @Permissions('MANAGE_USERS')
@@ -118,7 +116,6 @@ export class UserController {
     return this.userService.setActiveStatus(params, false);
   }
 
-  
   @ApiBearerAuth()
   @Get('/list/active/users')
   @UseGuards(JwtAuthGuard, PermissionGuard)
@@ -151,7 +148,6 @@ export class UserController {
   async updateUserPassword(@Body() body: PatchPasswordDTO) {
     return this.userService.updatePassword(body.email, body.password);
   }
-
 
   @ApiBearerAuth()
   @Put(':Id/email')

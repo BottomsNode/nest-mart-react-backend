@@ -10,7 +10,6 @@ import { AddressModule } from '../address/address.module';
 import { UserRepository } from './repository/user.repository';
 import { AuthModule } from '../auth/auth.module';
 import { BullModule } from '@nestjs/bull';
-import { MailService } from '../mail/mail.service';
 import { CustomerActivityLogModule } from '../log/customer-activity-log.module';
 import { MailModule } from '../mail/mail.module';
 @Module({
@@ -36,4 +35,4 @@ import { MailModule } from '../mail/mail.module';
   ],
   exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}

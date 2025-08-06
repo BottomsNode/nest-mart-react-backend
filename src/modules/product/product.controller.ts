@@ -9,7 +9,7 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { CreateProductDTO } from './dto/create-product.dto';
 import { UpdateProductDTO } from './dto/update-product.dto';
@@ -91,7 +91,7 @@ export class ProductController {
     @Param() params: IdParamDto,
     @Body() stock: StockDTO,
   ): Promise<ProductResponseDTO> {
-    return this.productService.updateStock(params,stock);
+    return this.productService.updateStock(params, stock);
   }
 
   @Put(':Id/activate/my/prod')

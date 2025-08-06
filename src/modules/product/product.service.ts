@@ -23,7 +23,7 @@ export class ProductService {
     @Inject('ProductRepository')
     private readonly productRepo: ProductRepository,
     @InjectMapper() private readonly mapper: Mapper,
-  ) { }
+  ) {}
 
   async create(dto: CreateProductDTO): Promise<ProductResponseDTO> {
     const exists = await this.productRepo.findByProductName(dto.name);
@@ -100,7 +100,11 @@ export class ProductService {
       PRODUCT_STATUS.ACTIVE,
     );
 
-    const mapped = this.mapper.mapArray(data.products, ProductEntity, ProductResponseDTO);
+    const mapped = this.mapper.mapArray(
+      data.products,
+      ProductEntity,
+      ProductResponseDTO,
+    );
 
     return {
       products: mapped,
@@ -108,7 +112,6 @@ export class ProductService {
       totalPages: data.totalPages,
     };
   }
-
 
   async getDeactiveProducts(pagination: PaginationRequestDto) {
     const data = await this.productRepo.listProducts(
@@ -117,7 +120,11 @@ export class ProductService {
       PRODUCT_STATUS.INACTIVE,
     );
 
-    const mapped = this.mapper.mapArray(data.products, ProductEntity, ProductResponseDTO);
+    const mapped = this.mapper.mapArray(
+      data.products,
+      ProductEntity,
+      ProductResponseDTO,
+    );
 
     return {
       products: mapped,
@@ -126,8 +133,10 @@ export class ProductService {
     };
   }
 
-
-  async setStatus(params: IdParamDto, status: PRODUCT_STATUS): Promise<ProductResponseDTO> {
+  async setStatus(
+    params: IdParamDto,
+    status: PRODUCT_STATUS,
+  ): Promise<ProductResponseDTO> {
     const product = await this.productRepo.findOne({
       where: { id: params.Id },
     });
@@ -143,7 +152,6 @@ export class ProductService {
     const main = this.mapper.map(saved, ProductEntity, ProductMainDTO);
     return this.mapper.map(main, ProductMainDTO, ProductResponseDTO);
   }
-
 
   async searchByName(term: string): Promise<ProductResponseDTO[]> {
     const found = await this.productRepo.queryBuilder(
@@ -162,7 +170,7 @@ export class ProductService {
       where: { id: params.Id },
     });
     if (!product) throw new CustomNotFoundException('Product not found');
-    product.stock = stock.stock
+    product.stock = stock.stock;
     const saved = await this.productRepo.update(params.Id, product);
     const main = this.mapper.map(saved, ProductEntity, ProductMainDTO);
     return this.mapper.map(main, ProductMainDTO, ProductResponseDTO);

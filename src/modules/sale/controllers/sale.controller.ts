@@ -25,7 +25,7 @@ import { PermissionGuard } from 'src/modules/auth/guards/permissions.guard';
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('sale')
 export class SaleController {
-  constructor(private readonly saleService: SaleService) { }
+  constructor(private readonly saleService: SaleService) {}
 
   @Post()
   @Permissions('CREATE_SALES')
@@ -48,7 +48,9 @@ export class SaleController {
   @Get('by-customer-email/:email')
   @Permissions('VIEW_OWN_SALES')
   @ApiResponse({ status: 404, description: 'No sales found for this customer' })
-  async getSalesByCustomerEmail(@Param('email') email: string): Promise<SaleResponseDTO[]> {
+  async getSalesByCustomerEmail(
+    @Param('email') email: string,
+  ): Promise<SaleResponseDTO[]> {
     return this.saleService.getSalesByCustomerEmail(email);
   }
 

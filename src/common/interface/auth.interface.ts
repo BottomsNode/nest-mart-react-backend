@@ -5,4 +5,5 @@ export interface AuthenticatedUser {
   userId: number;
   role: string;
   permission: RolesEntity;
+  exp: number;
 }

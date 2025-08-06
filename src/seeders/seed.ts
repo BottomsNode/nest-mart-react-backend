@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { AppDataSource } from '../config/typeorm.config';
 import { seedRoles } from './seed-roles.seeder';
 import { seedCustomers } from './seed-customers.seeder';

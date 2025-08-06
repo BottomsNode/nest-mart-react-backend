@@ -17,7 +17,12 @@ import { CustomerEntity } from '../user/entities/user.entity';
 @Module({
   imports: [
     ProductModule,
-    TypeOrmModule.forFeature([SaleEntity, SaleItemEntity, ProductEntity, CustomerEntity]),
+    TypeOrmModule.forFeature([
+      SaleEntity,
+      SaleItemEntity,
+      ProductEntity,
+      CustomerEntity,
+    ]),
   ],
   controllers: [SaleController, SaleItemController],
   providers: [
@@ -41,4 +46,4 @@ import { CustomerEntity } from '../user/entities/user.entity';
     },
   ],
 })
-export class SaleModule { }
+export class SaleModule {}

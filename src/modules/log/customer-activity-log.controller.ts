@@ -7,10 +7,10 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard('jwt'))
 @ApiBearerAuth()
 export class CustomerActivityLogController {
-    constructor(private readonly logService: CustomerActivityLogService) { }
+  constructor(private readonly logService: CustomerActivityLogService) {}
 
-    @Get()
-    async findAll() {
-        return this.logService.getAllLogs();
-    }
+  @Get()
+  async findAll() {
+    return this.logService.getAllLogs();
+  }
 }

@@ -18,10 +18,11 @@ import { UserRepository } from '../user/repository/user.repository';
 export class SaleService {
   constructor(
     @Inject('SalesRepository') private readonly salesRepo: SalesRepository,
-    @Inject('ProductRepository') private readonly productRepo: ProductRepository,
+    @Inject('ProductRepository')
+    private readonly productRepo: ProductRepository,
     @Inject('UserRepository') private readonly userRepo: UserRepository,
     @InjectMapper() private readonly mapper: Mapper,
-  ) { }
+  ) {}
 
   async create(dto: CreateSaleDTO): Promise<SaleResponseDTO> {
     const totalAmount = dto.items.reduce(
@@ -84,7 +85,9 @@ export class SaleService {
     const customer = await this.userRepo.findByEmail(email);
 
     if (!customer) {
-      throw new CustomNotFoundException(`Customer with email ${email} not found`);
+      throw new CustomNotFoundException(
+        `Customer with email ${email} not found`,
+      );
     }
 
     const sales = await this.salesRepo.find({
@@ -93,15 +96,16 @@ export class SaleService {
     });
 
     if (!sales || sales.length === 0) {
-      throw new CustomNotFoundException(`No sales found for customer with email ${email}`);
+      throw new CustomNotFoundException(
+        `No sales found for customer with email ${email}`,
+      );
     }
 
-    return sales.map(sale => {
+    return sales.map((sale) => {
       const main = this.mapper.map(sale, SaleEntity, SaleDTO);
       return this.mapper.map(main, SaleDTO, SaleResponseDTO);
     });
   }
-
 
   async updateSale(
     params: { Id: number },

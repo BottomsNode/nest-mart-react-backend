@@ -1,1 +1,1 @@
-export * from './auth-cron.service'
+export * from './auth-cron.service';

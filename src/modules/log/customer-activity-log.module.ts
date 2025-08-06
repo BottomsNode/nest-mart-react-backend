@@ -5,9 +5,9 @@ import { CustomerActivityLogEntity } from './entities/user-activity-log.entity';
 import { CustomerActivityLogController } from './customer-activity-log.controller';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([CustomerActivityLogEntity])],
-    providers: [CustomerActivityLogService],
-    controllers: [CustomerActivityLogController],
-    exports: [CustomerActivityLogService],
+  imports: [TypeOrmModule.forFeature([CustomerActivityLogEntity])],
+  providers: [CustomerActivityLogService],
+  controllers: [CustomerActivityLogController],
+  exports: [CustomerActivityLogService],
 })
-export class CustomerActivityLogModule { }
+export class CustomerActivityLogModule {}
