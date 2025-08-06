@@ -9,7 +9,7 @@ async function bootstrap() {
 
   // Enable CORS for all origins
   app.enableCors({
-    origin: "*",
+    origin: '*',
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: [
       'Content-Type',
@@ -18,13 +18,14 @@ async function bootstrap() {
       'Accept',
       'Origin',
       'X-Requested-With',
-      'Access-Control-Allow-Origin'
+      'Access-Control-Allow-Origin',
     ],
     credentials: true,
   });
 
   // Setup Swagger
-  const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
+  const documentFactory = () =>
+    SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup(`${SWAGGER_DOCS}`, app, documentFactory);
 
   app.useGlobalFilters(new GlobalExceptionsFilter());
@@ -52,6 +53,8 @@ function runHeartbeat(): void {
 function monitorMemory(): void {
   setInterval(() => {
     const used = process.memoryUsage();
-    console.log(`📊 Memory Usage - Heap Used: ${(used.heapUsed / 1024 / 1024).toFixed(2)} MB`);
+    console.log(
+      `📊 Memory Usage - Heap Used: ${(used.heapUsed / 1024 / 1024).toFixed(2)} MB`,
+    );
   }, 60000);
 }

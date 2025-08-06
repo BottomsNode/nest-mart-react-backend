@@ -15,4 +15,4 @@ export enum Pagination_Length {
 
 export const MAX_PROFILE_PICTURE_SIZE_IN_BYTES = 5 * 1024 * 1024;
 
-export const logoUrl = `https://drive.google.com/file/d/1olnU72H9fxFb0XzmeRyLyDzFbkV94fqj/view?usp=drive_link`
+export const logoUrl = `https://drive.google.com/file/d/1olnU72H9fxFb0XzmeRyLyDzFbkV94fqj/view?usp=drive_link`;

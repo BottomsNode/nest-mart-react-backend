@@ -1,5 +1,5 @@
 import { DocumentBuilder } from '@nestjs/swagger';
-import { DB_HOST, DB_NAME, PORT } from 'src/common/secrets/secrets.keys';
+import { DB_NAME } from 'src/common/secrets/secrets.keys';
 
 export const swaggerConfig = new DocumentBuilder()
   .setTitle('NestMart API Documentation')

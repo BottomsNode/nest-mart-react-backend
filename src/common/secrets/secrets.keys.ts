@@ -4,7 +4,7 @@ import { existsSync } from 'fs';
 const envPath = `.env.${process.env.NODE_ENV || 'development'}`;
 
 dotenv.config({
-    path: existsSync(envPath) ? envPath : './.env',
+  path: existsSync(envPath) ? envPath : './.env',
 });
 
 export const PORT = process.env.PORT;

@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { CLIENT_URL, logoUrl } from 'src/common';
+import { CLIENT_URL } from 'src/common';
 
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService,
-  ) { }
+  constructor(private readonly mailerService: MailerService) {}
 
   async sendWelcomeEmail(email: string, name: string, password: string) {
     const websiteUrl = `http://${CLIENT_URL}`;
@@ -82,7 +81,6 @@ export class MailService {
     deletedCount: number,
     timestamp: string,
   ) {
-
     const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
       <div style="background-color: #2d3748; color: #ffffff; padding: 20px; text-align: center;">
@@ -124,5 +122,4 @@ export class MailService {
       html: htmlContent,
     });
   }
-
 }

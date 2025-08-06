@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
@@ -7,7 +7,11 @@ import { CreateCustomerDTO } from './dto/create-customer.dto';
 import { UpdateCustomerDTO } from './dto/update-customer.dto';
 import { CustomerResponseDTO } from './dto/response-customer.dto';
 import { CustomerMainDTO } from './dto/main-customer..dto';
-import { CustomNotFoundException, IdParamDto, PaginationRequestDto } from 'src/common';
+import {
+  CustomNotFoundException,
+  IdParamDto,
+  PaginationRequestDto,
+} from 'src/common';
 import { AddressService } from '../address/address.service';
 import { PatchAddressDTO } from '../address/dto/patch/patch-address.dto';
 import { UserRepository } from './repository/user.repository';
@@ -29,8 +33,8 @@ export class UserService {
     @InjectMapper() private readonly mapper: Mapper,
     private readonly addressService: AddressService,
     private readonly logService: CustomerActivityLogService,
-    private readonly mailService: MailService
-  ) { }
+    private readonly mailService: MailService,
+  ) {}
 
   // async create(dto: CreateCustomerDTO): Promise<CustomerResponseDTO> {
 
@@ -60,13 +64,18 @@ export class UserService {
 
   //   return customer;
   // }
-  async create(dto: CreateCustomerDTO, req?: Request): Promise<CustomerResponseDTO> {
+  async create(
+    dto: CreateCustomerDTO,
+    req?: Request,
+  ): Promise<CustomerResponseDTO> {
     const existingCustomer = await this.customerRepo.findOne({
       where: { email: dto.email },
     });
 
     if (existingCustomer) {
-      throw new CustomConflictException('Customer with this email already exists');
+      throw new CustomConflictException(
+        'Customer with this email already exists',
+      );
     }
 
     const rawPassword = this.generateRandomPassword();
@@ -86,14 +95,10 @@ export class UserService {
     );
 
     try {
-      await this.logService.log(
-        customer,
-        'User Account Created',
-        {
-          ip: req?.ip || 'unknown',
-          userAgent: req?.headers['user-agent'] || 'unknown',
-        }
-      );
+      await this.logService.log(customer, 'User Account Created', {
+        ip: req?.ip || 'unknown',
+        userAgent: req?.headers['user-agent'] || 'unknown',
+      });
     } catch (err) {
       console.error('Failed to log user creation:', err);
     }
@@ -186,7 +191,10 @@ export class UserService {
     return this.mapper.mapArray(mainList, CustomerMainDTO, CustomerResponseDTO);
   }
 
-  async updatePassword(email: string, password: string): Promise<CustomerResponseDTO> {
+  async updatePassword(
+    email: string,
+    password: string,
+  ): Promise<CustomerResponseDTO> {
     const user = await this.customerRepo.findOne({ where: { email } });
     if (!user) throw new CustomNotFoundException('User not found');
 
@@ -297,5 +305,4 @@ export class UserService {
 
     return password.join('');
   }
-
 }

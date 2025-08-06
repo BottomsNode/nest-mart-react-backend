@@ -1,1 +1,1 @@
-export * from './user-activity-log.entity'
+export * from './user-activity-log.entity';

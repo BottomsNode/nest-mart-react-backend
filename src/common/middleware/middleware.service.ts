@@ -2,7 +2,15 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import Redis from 'ioredis';
-import { AuthenticatedUser, CustomBadGatewayException, CustomUnauthorizedException, jwtSecret, REDIS_HOST, REDIS_PASSWORD, REDIS_PORT } from 'src/common';
+import {
+  AuthenticatedUser,
+  CustomBadGatewayException,
+  CustomUnauthorizedException,
+  jwtSecret,
+  REDIS_HOST,
+  REDIS_PASSWORD,
+  REDIS_PORT,
+} from 'src/common';
 
 let redisClient: Redis | null = null;
 
@@ -33,7 +41,7 @@ export class AuthMiddleware implements NestMiddleware {
       const decoded = jwt.verify(token, jwtSecret) as AuthenticatedUser;
 
       const now = Math.floor(Date.now() / 1000);
-      const exp = (decoded as any).exp;
+      const exp = decoded.exp;
 
       if (!exp || exp <= now) {
         throw new CustomUnauthorizedException('Token expired');
@@ -43,11 +51,15 @@ export class AuthMiddleware implements NestMiddleware {
       const storedToken = await this.redis.get(`user_token:${decoded.id}`);
 
       if (!storedToken) {
-        throw new CustomUnauthorizedException('Session expired. Please login again.');
+        throw new CustomUnauthorizedException(
+          'Session expired. Please login again.',
+        );
       }
 
       if (storedToken !== token) {
-        throw new CustomUnauthorizedException('You have logged in from another device/session.');
+        throw new CustomUnauthorizedException(
+          'You have logged in from another device/session.',
+        );
       }
 
       req['user'] = decoded;
@@ -57,5 +69,4 @@ export class AuthMiddleware implements NestMiddleware {
       throw new CustomBadGatewayException('Invalid token');
     }
   }
-
 }

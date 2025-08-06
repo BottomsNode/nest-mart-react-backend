@@ -1,79 +1,97 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import fetch from 'node-fetch';
-import * as FormData from 'form-data';
 import { v2 as cloudinary } from 'cloudinary';
-import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from 'src/common';
 
-type CloudinaryUploadResponse = {
-    asset_id: string;
-    public_id: string;
-    version: number;
-    version_id: string;
-    signature: string;
-    width: number;
-    height: number;
-    format: string;
-    resource_type: string;
-    created_at: string;
-    tags: string[];
-    bytes: number;
-    type: string;
-    etag: string;
-    placeholder: boolean;
-    url: string;
-    secure_url: string;
-    original_filename: string;
-};
-
+interface CloudinaryUploadResponse {
+  asset_id: string;
+  public_id: string;
+  version: number;
+  version_id: string;
+  signature: string;
+  width: number;
+  height: number;
+  format: string;
+  resource_type: string;
+  created_at: string;
+  tags: string[];
+  bytes: number;
+  type: string;
+  etag: string;
+  placeholder: boolean;
+  url: string;
+  secure_url: string;
+  original_filename: string;
+}
+interface UploadType {
+  timestamp: number;
+  signature: string;
+  apiKey: string;
+  cloudName: string;
+  folder: string;
+}
 @Injectable()
 export class ProfileService {
-    private readonly uploadDir = './uploads';
+  private readonly uploadDir = './uploads';
 
-    constructor() {
-        if (!fs.existsSync(this.uploadDir)) {
-            fs.mkdirSync(this.uploadDir);
-        }
-
-        cloudinary.config({
-            cloud_name: 'dmlai0dwy',
-            api_key: '889616663176843',
-            api_secret: '-abn8Y-dhbcbOfyVwRYW-sITbLM',
-        });
+  constructor() {
+    if (!fs.existsSync(this.uploadDir)) {
+      fs.mkdirSync(this.uploadDir);
     }
 
-    async saveFile(file): Promise<string> {
-        const fileName = `${Date.now()}_${file.originalname}`;
-        const filePath = path.join(this.uploadDir, fileName);
+    cloudinary.config({
+      cloud_name: 'dmlai0dwy',
+      api_key: '889616663176843',
+      api_secret: '-abn8Y-dhbcbOfyVwRYW-sITbLM',
+    });
+  }
 
-        try {
-            fs.writeFileSync(filePath, file.buffer);
-        }
-        catch (error) {
-            throw new Error('Failed to save file');
-        }
-
-        return fileName;
+  async saveFile(file: Express.Multer.File): Promise<string> {
+    const fileName = `${Date.now()}_${file.originalname}`;
+    const filePath = path.join(this.uploadDir, fileName);
+    try {
+      await fs.promises.writeFile(filePath, file.buffer);
+    } catch {
+      throw new Error('Failed to save file');
     }
+    return fileName;
+  }
 
-    async getUploadSignature(folder = 'invoices') {
-        const timestamp = Math.round(new Date().getTime() / 1000);
+  getUploadSignature(folder = 'invoices'): UploadType {
+    const timestamp = Math.round(new Date().getTime() / 1000);
+    const signature = cloudinary.utils.api_sign_request(
+      {
+        timestamp,
+        folder,
+      },
+      cloudinary.config().api_secret,
+    );
 
-        const signature = cloudinary.utils.api_sign_request(
-            {
-                timestamp,
-                folder,
-            },
-            cloudinary.config().api_secret as string,
+    return {
+      timestamp,
+      signature,
+      apiKey: cloudinary.config().api_key,
+      cloudName: cloudinary.config().cloud_name,
+      folder,
+    };
+  }
+
+  async uploadToCloudinary(
+    filePath: string,
+  ): Promise<CloudinaryUploadResponse> {
+    try {
+      const uploadResponse = await cloudinary.uploader.upload(filePath, {
+        folder: 'invoices',
+      });
+
+      return uploadResponse as unknown as CloudinaryUploadResponse;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(
+          `Failed to upload file to cloudinary: ${error.message}`,
         );
-
-        return {
-            timestamp,
-            signature,
-            apiKey: cloudinary.config().api_key,
-            cloudName: cloudinary.config().cloud_name,
-            folder,
-        };
+      }
+      throw new Error('Failed to upload file to cloudinary');
     }
+  }
 }

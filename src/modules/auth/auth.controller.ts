@@ -9,7 +9,7 @@ import { Request } from 'express';
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   async login(@Body() body: LoginDTO, @Req() req: Request) {
@@ -27,5 +27,4 @@ export class AuthController {
     await this.authService.logout(user.userId);
     return { message: 'Logged out successfully' };
   }
-
 }

@@ -10,8 +10,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PermissionsEntity } from './entities/permission.entity';
 import { RolesEntity } from './entities/role.entity';
 import { RolesRepository } from './repository/roles.repository';
-import { redisProvider } from './redis.provider';
-import { AuthCronService } from './cron-jobs';
 import { CustomerActivityLogModule } from '../log/customer-activity-log.module';
 import { MailModule } from '../mail/mail.module';
 
@@ -38,4 +36,4 @@ import { MailModule } from '../mail/mail.module';
   ],
   exports: ['RolesRepository'],
 })
-export class AuthModule { }
+export class AuthModule {}

@@ -1,4 +1,13 @@
-import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_SSL_MODE, DB_TYPE, DB_USERNAME, NODE_ENV } from 'src/common';
+import {
+  DB_HOST,
+  DB_NAME,
+  DB_PASSWORD,
+  DB_PORT,
+  DB_SSL_MODE,
+  DB_TYPE,
+  DB_USERNAME,
+  NODE_ENV,
+} from 'src/common';
 import { DataSource } from 'typeorm';
 export const AppDataSource = new DataSource({
   type: DB_TYPE as 'postgres',
