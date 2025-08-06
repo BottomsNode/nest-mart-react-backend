@@ -23,7 +23,7 @@ interface CloudinaryUploadResponse {
   secure_url: string;
   original_filename: string;
 }
-interface UploadType {
+export interface UploadType {
   timestamp: number;
   signature: string;
   apiKey: string;

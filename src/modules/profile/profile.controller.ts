@@ -7,7 +7,7 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfileService } from './profile.service';
+import { ProfileService, UploadType } from './profile.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { MultiFilesUploadDto } from './dto/multi-file-upload.dto';
@@ -50,7 +50,7 @@ export class ProfileController {
   }
 
   @Get('signature')
-  getSignature(@Query('folder') folder?: string) {
+  getSignature(@Query('folder') folder?: string): UploadType {
     return this.service.getUploadSignature(folder ?? 'invoices');
   }
 }
